@@ -42,7 +42,7 @@ Resources:
           Properties:
             RestApiId:
               Ref: ShortFunnelApi
-            Path: /auth1
+            Path: /shortfunnel-health
             Method: post
 
   ShortFunnelApi:
@@ -107,6 +107,7 @@ Resources:
                       statusCode: "200"
                   passthroughBehavior: when_no_match
                   contentHandling: CONVERT_TO_TEXT
+
             /shortfunnel/energy:
               post:
                 produces:
@@ -142,7 +143,7 @@ Resources:
                   passthroughBehavior: when_no_match
                   contentHandling: CONVERT_TO_TEXT
 
-            /auth1:
+            /shortfunnel-health:
               post:
                   produces:
                   - "application/json"
@@ -261,5 +262,5 @@ Outputs:
     Value: !Sub "https://${ShortFunnelApi}.execute-api.${AWS::Region}.amazonaws.com/dev/shortfunnel/energy?apiKey=${AWS::StackName}-unbounce-key"
   ShortFunnelAuth:
     Description: "API Gateway endpoint URL for dev stage for api key validation in query string"
-    Value: !Sub "https://${ShortFunnelApi}.execute-api.${AWS::Region}.amazonaws.com/dev/auth1?apiKey=${AWS::StackName}-unbounce-key"
+    Value: !Sub "https://${ShortFunnelApi}.execute-api.${AWS::Region}.amazonaws.com/dev/auth?apiKey=${AWS::StackName}-unbounce-key"
 

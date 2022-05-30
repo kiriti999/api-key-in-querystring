@@ -23,12 +23,10 @@ def lambda_handler(event, context):
         policy.restApiId = apiGatewayArnTmp[0]
         policy.region = tmp[3]
         policy.stage = apiGatewayArnTmp[1]
-        policy.allowMethod('GET', '/auth1')
-        policy.allowMethod('POST', '/auth1')
-        policy.allowMethod('GET', '/shortfunnel/health')
-        policy.allowMethod('GET', '/shortfunnel/energy')
-        policy.allowMethod('POST', '/shortfunnel/health')
+        policy.allowMethod('POST', '/shortfunnel')
+        policy.allowMethod('POST', '/shortfunnel/*')
         policy.allowMethod('POST', '/shortfunnel/energy')
+        policy.allowMethod('POST', '/shortfunnel-health')
         authResponse = policy.build()
         context = {
             'SomeKey': 'SomeValue'
@@ -40,7 +38,7 @@ def lambda_handler(event, context):
         authResponse['usageIdentifierKey'] = usageIdentifierKey
         print(authResponse)
     except:
-        print("An exception occurred")
+        print("lambda_handler:: An exception occurred")
 
     return authResponse
 
@@ -63,7 +61,7 @@ class AuthPolicy(object):
     version = "2012-10-17"
     """The regular expression used to validate resource paths for the policy"""
     # pathRegex = "^[/.a-zA-Z0-9-\*]+$"
-    pathRegex = "/[^/]+/?[^/]+"
+    pathRegex = "/[^/]+/?[^/\*]+"
     # pathRegex = "/[^/][a-zA-Z0-9]+/?[^/][a-zA-Z0-9-\*]+"
 
     """these are the internal lists of allowed and denied methods. These are lists
