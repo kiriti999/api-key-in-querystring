@@ -22,8 +22,10 @@ def lambda_handler(event, context):
     policy.restApiId = apiGatewayArnTmp[0]
     policy.region = tmp[3]
     policy.stage = apiGatewayArnTmp[1]
-    policy.allowMethod('GET', '/auth')
-    policy.allowMethod('POST', '/auth')
+    policy.allowMethod('GET', '/shortfunnel/health')
+    policy.allowMethod('GET', '/shortfunnel/energy')
+    policy.allowMethod('POST', '/shortfunnel/health')
+    policy.allowMethod('POST', '/shortfunnel/energy')
     authResponse = policy.build()
     context = {
         'SomeKey': 'SomeValue'

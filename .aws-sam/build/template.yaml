@@ -212,7 +212,7 @@ Resources:
         Fn::Join:
         - ''
         - - Ref: AWS::StackName
-          - -abcdefhijk1234567890
+          - -ea-shortfunnel-key
   UsagePlan:
     DependsOn: ShortFunnelApidevStage
     Type: AWS::ApiGateway::UsagePlan
@@ -238,4 +238,4 @@ Outputs:
     Description: API Gateway endpoint URL for dev stage for api key validation in
       query string
     Value:
-      Fn::Sub: https://${ShortFunnelApi}.execute-api.${AWS::Region}.amazonaws.com/dev/auth?apiKey=${AWS::StackName}-abcdefhijk1234567890
+      Fn::Sub: https://${ShortFunnelApi}.execute-api.${AWS::Region}.amazonaws.com/dev/auth?apiKey=${AWS::StackName}-ea-shortfunnel-key

@@ -199,7 +199,7 @@ Resources:
       StageKeys:
         - RestApiId: !Ref ShortFunnelApi
           StageName: dev
-      Value: !Join ["", [{"Ref": "AWS::StackName"}, "-ea-shortfunnel-key"]]
+      Value: !Join ["", [{"Ref": "AWS::StackName"}, "-unbounce-key"]]
 
   UsagePlan:
     DependsOn: ShortFunnelApidevStage
@@ -221,7 +221,10 @@ Resources:
       UsagePlanId: !Ref UsagePlan
 
 Outputs:
-  HelloWorldApi:
+  ShortFunnelApiHealth:
     Description: "API Gateway endpoint URL for dev stage for api key validation in query string"
-    Value: !Sub "https://${ShortFunnelApi}.execute-api.${AWS::Region}.amazonaws.com/dev/auth?apiKey=${AWS::StackName}-ea-shortfunnel-key"
+    Value: !Sub "https://${ShortFunnelApi}.execute-api.${AWS::Region}.amazonaws.com/dev/shortfunnel/health?apiKey=${AWS::StackName}-unbounce-key"
+  ShortFunnelApiEnergy:
+    Description: "API Gateway endpoint URL for dev stage for api key validation in query string"
+    Value: !Sub "https://${ShortFunnelApi}.execute-api.${AWS::Region}.amazonaws.com/dev/shortfunnel/energy?apiKey=${AWS::StackName}-unbounce-key"
 
