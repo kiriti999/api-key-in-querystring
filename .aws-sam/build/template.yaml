@@ -29,21 +29,14 @@ Resources:
           Properties:
             RestApiId:
               Ref: ShortFunnelApi
-            Path: /health
+            Path: /shortfunnel-health
             Method: post
         energy:
           Type: Api
           Properties:
             RestApiId:
               Ref: ShortFunnelApi
-            Path: /energy
-            Method: post
-        testPost:
-          Type: Api
-          Properties:
-            RestApiId:
-              Ref: ShortFunnelApi
-            Path: /shortfunnel-health
+            Path: /shortfunnel-energy
             Method: post
     Metadata:
       SamResourceId: BackendFunction
@@ -78,83 +71,64 @@ Resources:
         schemes:
         - https
         paths:
-          /shortfunnel/health:
-            post:
-              produces:
-              - application/json
-              parameters:
-              - in: query
-                name: apiKey
-                schema:
-                  type: string
-                required: true
-              requestBody:
-                content:
-                  application/json:
-                    schema:
-                      $ref: '#/components/schemas/shortFunnelHealthEnergy'
-              responses:
-                '200':
-                  description: 200 response
-                  schema:
-                    $ref: '#/components/schemas/responses/200'
-                '400':
-                  description: 400 response
-                  schema:
-                    $ref: '#/components/schemas/responses/400'
-              x-amazon-apigateway-integration:
-                type: aws_proxy
-                httpMethod: POST
-                uri:
-                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${BackendFunction.Arn}/invocations
-                responses:
-                  default:
-                    statusCode: '200'
-                passthroughBehavior: when_no_match
-                contentHandling: CONVERT_TO_TEXT
-          /shortfunnel/energy:
-            post:
-              produces:
-              - application/json
-              parameters:
-              - in: query
-                name: apiKey
-                schema:
-                  type: string
-                required: true
-              requestBody:
-                content:
-                  application/json:
-                    schema:
-                      $ref: '#/components/schemas/shortFunnelHealthEnergy'
-              responses:
-                '200':
-                  description: 200 response
-                  schema:
-                    $ref: '#/components/schemas/responses/200'
-                '400':
-                  description: 400 response
-                  schema:
-                    $ref: '#/components/schemas/responses/400'
-              x-amazon-apigateway-integration:
-                type: aws_proxy
-                httpMethod: POST
-                uri:
-                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${BackendFunction.Arn}/invocations
-                responses:
-                  default:
-                    statusCode: '200'
-                passthroughBehavior: when_no_match
-                contentHandling: CONVERT_TO_TEXT
           /shortfunnel-health:
             post:
               produces:
               - application/json
+              parameters:
+              - in: query
+                name: apiKey
+                schema:
+                  type: string
+                required: true
+              requestBody:
+                content:
+                  application/json:
+                    schema:
+                      $ref: '#/components/schemas/shortFunnelHealthEnergy'
               responses:
                 '200':
                   description: 200 response
                   schema:
-                    $ref: '#/components/schemas/definitions/Empty'
+                    $ref: '#/components/schemas/responses/200'
+                '400':
+                  description: 400 response
+                  schema:
+                    $ref: '#/components/schemas/responses/400'
+              x-amazon-apigateway-integration:
+                type: aws_proxy
+                httpMethod: POST
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${BackendFunction.Arn}/invocations
+                responses:
+                  default:
+                    statusCode: '200'
+                passthroughBehavior: when_no_match
+                contentHandling: CONVERT_TO_TEXT
+          /shortfunnel-energy:
+            post:
+              produces:
+              - application/json
+              parameters:
+              - in: query
+                name: apiKey
+                schema:
+                  type: string
+                required: true
+              requestBody:
+                content:
+                  application/json:
+                    schema:
+                      $ref: '#/components/schemas/shortFunnelHealthEnergy'
+              responses:
+                '200':
+                  description: 200 response
+                  schema:
+                    $ref: '#/components/schemas/responses/200'
+                '400':
+                  description: 400 response
+                  schema:
+                    $ref: '#/components/schemas/responses/400'
               x-amazon-apigateway-integration:
                 type: aws_proxy
                 httpMethod: POST
@@ -268,14 +242,9 @@ Outputs:
     Description: API Gateway endpoint URL for dev stage for api key validation in
       query string
     Value:
-      Fn::Sub: https://${ShortFunnelApi}.execute-api.${AWS::Region}.amazonaws.com/dev/shortfunnel/health?apiKey=${AWS::StackName}-unbounce-key
+      Fn::Sub: https://${ShortFunnelApi}.execute-api.${AWS::Region}.amazonaws.com/dev/shortfunnel-health?apiKey=${AWS::StackName}-unbounce-key
   ShortFunnelApiEnergy:
     Description: API Gateway endpoint URL for dev stage for api key validation in
       query string
     Value:
-      Fn::Sub: https://${ShortFunnelApi}.execute-api.${AWS::Region}.amazonaws.com/dev/shortfunnel/energy?apiKey=${AWS::StackName}-unbounce-key
-  ShortFunnelAuth:
-    Description: API Gateway endpoint URL for dev stage for api key validation in
-      query string
-    Value:
-      Fn::Sub: https://${ShortFunnelApi}.execute-api.${AWS::Region}.amazonaws.com/dev/auth?apiKey=${AWS::StackName}-unbounce-key
+      Fn::Sub: https://${ShortFunnelApi}.execute-api.${AWS::Region}.amazonaws.com/dev/shortfunnel-energy?apiKey=${AWS::StackName}-unbounce-key
