@@ -13,8 +13,8 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: AuthFunction
-      Handler: app.lambda_handler
-      Runtime: python3.8
+      Handler: handler.lambda_handler
+      Runtime: nodejs14.x
     Metadata:
       SamResourceId: AuthFunction
   BackendFunction:

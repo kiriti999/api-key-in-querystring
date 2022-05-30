@@ -31,9 +31,9 @@ exports.lambda_handler = function (event, context, callback) {
     policy.restApiId = apiGatewayArnTmp[0]
     policy.region = tmp[3]
     policy.stage = apiGatewayArnTmp[1]
-    policy.allowMethods(AuthPolicy.HttpVerb.POST, '/shortfunnel-energy')
-    policy.allowMethods(AuthPolicy.HttpVerb.POST, '/shortfunnel-health')
-    policy.allowMethods(AuthPolicy.HttpVerb.POST, '/shortfunnel/health')
+    AuthPolicy.prototype.allowMethod(AuthPolicy.HttpVerb.POST, '/shortfunnel-energy')
+    AuthPolicy.prototype.allowMethod(AuthPolicy.HttpVerb.POST, '/shortfunnel-health')
+    AuthPolicy.prototype.allowMethod(AuthPolicy.HttpVerb.POST, '/shortfunnel/health')
     // policy.allowMethod(AuthPolicy.HttpVerb.GET, "/users/username");
 
     // finally, build the policy
