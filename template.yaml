@@ -199,7 +199,7 @@ Resources:
       StageKeys:
         - RestApiId: !Ref ShortFunnelApi
           StageName: dev
-      Value: !Join ["", [{"Ref": "AWS::StackName"}, "-abcdefhijk1234567890"]]
+      Value: !Join ["", [{"Ref": "AWS::StackName"}, "-ea-shortfunnel-key"]]
 
   UsagePlan:
     DependsOn: ShortFunnelApidevStage
@@ -223,5 +223,5 @@ Resources:
 Outputs:
   HelloWorldApi:
     Description: "API Gateway endpoint URL for dev stage for api key validation in query string"
-    Value: !Sub "https://${ShortFunnelApi}.execute-api.${AWS::Region}.amazonaws.com/dev/auth?apiKey=${AWS::StackName}-abcdefhijk1234567890"
+    Value: !Sub "https://${ShortFunnelApi}.execute-api.${AWS::Region}.amazonaws.com/dev/auth?apiKey=${AWS::StackName}-ea-shortfunnel-key"
 
