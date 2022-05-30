@@ -10,7 +10,7 @@ import re
 #The sole purpose of this function is to extract & return the apiKey param.
 
 def lambda_handler(event, context):
-    print(event)
+    print("event ", event)
     print("Method ARN: " + event['methodArn'])
     apiKey = event['queryStringParameters']['apiKey']
     principalId = "user|a1b2c3d4"
@@ -22,7 +22,8 @@ def lambda_handler(event, context):
     policy.restApiId = apiGatewayArnTmp[0]
     policy.region = tmp[3]
     policy.stage = apiGatewayArnTmp[1]
-    policy.allowMethod('POST', '/auth')
+    policy.allowMethod('GET', '/auth1')
+    policy.allowMethod('POST', '/auth1')
     policy.allowMethod('GET', '/shortfunnel/health')
     policy.allowMethod('GET', '/shortfunnel/energy')
     policy.allowMethod('POST', '/shortfunnel/health')
@@ -64,7 +65,7 @@ class AuthPolicy(object):
     """these are the internal lists of allowed and denied methods. These are lists
     of objects and each object has 2 properties: A resource ARN and a nullable
     conditions statement.
-    the build method processes these lists and generates the approriate
+    the build method processes these lists and generates the appropriate
     statements for the final policy"""
     allowMethods = []
     denyMethods = []
@@ -103,12 +104,9 @@ class AuthPolicy(object):
             print("Invalid resource path ", resource)
             raise NameError("Invalid resource path: " + resource + ". Path should match " + self.pathRegex)
 
-        print('resource[:1]' , resource[:1])
-
         if resource[:1] == "/":
             resource = resource[1:]
 
-        print('resource' , resource)
         resourceArn = ("arn:aws:execute-api:" +
             self.region + ":" +
             self.awsAccountId + ":" +
@@ -116,8 +114,6 @@ class AuthPolicy(object):
             self.stage + "/" +
             verb + "/" +
             resource)
-
-        print('resourceArn ' , resourceArn)
 
         if effect.lower() == "allow":
             self.allowMethods.append({
@@ -160,7 +156,7 @@ class AuthPolicy(object):
 
             statements.append(statement)
 
-        print('statements ', statements)
+            print('statements ', statements)
 
         return statements
 
@@ -201,6 +197,7 @@ class AuthPolicy(object):
         Methods that includes conditions will have their own statement in the policy."""
         if ((self.allowMethods is None or len(self.allowMethods) == 0) and
             (self.denyMethods is None or len(self.denyMethods) == 0)):
+            print("No statements defined for the policy")
             raise NameError("No statements defined for the policy")
 
         policy = {
