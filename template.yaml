@@ -28,21 +28,14 @@ Resources:
           Properties:
             RestApiId:
               Ref: ShortFunnelApi
-            Path: /health
+            Path: /shortfunnel-health
             Method: post
         energy:
           Type: Api
           Properties:
             RestApiId:
               Ref: ShortFunnelApi
-            Path: /energy
-            Method: post
-        testPost:
-          Type: Api
-          Properties:
-            RestApiId:
-              Ref: ShortFunnelApi
-            Path: /shortfunnel-health
+            Path: /shortfunnel-energy
             Method: post
 
   ShortFunnelApi:
@@ -73,95 +66,75 @@ Resources:
           schemes:
           - "https"
           paths:
-            /shortfunnel/health:
-              post:
-                produces:
-                  - application/json
-                parameters:
-                  - in: query
-                    name: apiKey
-                    schema:
-                      type: string
-                    required: true
-                requestBody:
-                  content:
-                    application/json:
-                      schema:
-                        $ref: "#/components/schemas/shortFunnelHealthEnergy"
-                responses:
-                  "200":
-                    description: 200 response
-                    schema:
-                      $ref: "#/components/schemas/responses/200"
-                  "400":
-                    description: 400 response
-                    schema:
-                      $ref: "#/components/schemas/responses/400"
-                x-amazon-apigateway-integration:
-                  type: aws_proxy
-                  httpMethod: POST
-                  uri:
-                    Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${BackendFunction.Arn}/invocations
-                  responses:
-                    default:
-                      statusCode: "200"
-                  passthroughBehavior: when_no_match
-                  contentHandling: CONVERT_TO_TEXT
-
-            /shortfunnel/energy:
-              post:
-                produces:
-                  - application/json
-                parameters:
-                  - in: query
-                    name: apiKey
-                    schema:
-                      type: string
-                    required: true
-                requestBody:
-                  content:
-                    application/json:
-                      schema:
-                        $ref: "#/components/schemas/shortFunnelHealthEnergy"
-                responses:
-                  "200":
-                    description: 200 response
-                    schema:
-                      $ref: "#/components/schemas/responses/200"
-                  "400":
-                    description: 400 response
-                    schema:
-                      $ref: "#/components/schemas/responses/400"
-                x-amazon-apigateway-integration:
-                  type: aws_proxy
-                  httpMethod: POST
-                  uri:
-                    Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${BackendFunction.Arn}/invocations
-                  responses:
-                    default:
-                      statusCode: "200"
-                  passthroughBehavior: when_no_match
-                  contentHandling: CONVERT_TO_TEXT
-
             /shortfunnel-health:
               post:
-                  produces:
-                  - "application/json"
-                  responses:
-                    "200":
-                      description: "200 response"
+                produces:
+                  - application/json
+                parameters:
+                  - in: query
+                    name: apiKey
+                    schema:
+                      type: string
+                    required: true
+                requestBody:
+                  content:
+                    application/json:
                       schema:
-                        $ref: "#/components/schemas/definitions/Empty"
-                  x-amazon-apigateway-integration:
-                    type: "aws_proxy"
-                    httpMethod: "POST"
-                    uri:
-                      Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${BackendFunction.Arn}/invocations"
-                    responses:
-                      default:
-                        statusCode: "200"
-                    passthroughBehavior: "when_no_match"
-                    contentHandling: "CONVERT_TO_TEXT"
+                        $ref: "#/components/schemas/shortFunnelHealthEnergy"
+                responses:
+                  "200":
+                    description: 200 response
+                    schema:
+                      $ref: "#/components/schemas/responses/200"
+                  "400":
+                    description: 400 response
+                    schema:
+                      $ref: "#/components/schemas/responses/400"
+                x-amazon-apigateway-integration:
+                  type: aws_proxy
+                  httpMethod: POST
+                  uri:
+                    Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${BackendFunction.Arn}/invocations
+                  responses:
+                    default:
+                      statusCode: "200"
+                  passthroughBehavior: when_no_match
+                  contentHandling: CONVERT_TO_TEXT
+
+            /shortfunnel-energy:
+              post:
+                produces:
+                  - application/json
+                parameters:
+                  - in: query
+                    name: apiKey
+                    schema:
+                      type: string
+                    required: true
+                requestBody:
+                  content:
+                    application/json:
+                      schema:
+                        $ref: "#/components/schemas/shortFunnelHealthEnergy"
+                responses:
+                  "200":
+                    description: 200 response
+                    schema:
+                      $ref: "#/components/schemas/responses/200"
+                  "400":
+                    description: 400 response
+                    schema:
+                      $ref: "#/components/schemas/responses/400"
+                x-amazon-apigateway-integration:
+                  type: aws_proxy
+                  httpMethod: POST
+                  uri:
+                    Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${BackendFunction.Arn}/invocations
+                  responses:
+                    default:
+                      statusCode: "200"
+                  passthroughBehavior: when_no_match
+                  contentHandling: CONVERT_TO_TEXT
 
           components:
             schemas:
@@ -256,11 +229,7 @@ Resources:
 Outputs:
   ShortFunnelApiHealth:
     Description: "API Gateway endpoint URL for dev stage for api key validation in query string"
-    Value: !Sub "https://${ShortFunnelApi}.execute-api.${AWS::Region}.amazonaws.com/dev/shortfunnel/health?apiKey=${AWS::StackName}-unbounce-key"
+    Value: !Sub "https://${ShortFunnelApi}.execute-api.${AWS::Region}.amazonaws.com/dev/shortfunnel-health?apiKey=${AWS::StackName}-unbounce-key"
   ShortFunnelApiEnergy:
     Description: "API Gateway endpoint URL for dev stage for api key validation in query string"
-    Value: !Sub "https://${ShortFunnelApi}.execute-api.${AWS::Region}.amazonaws.com/dev/shortfunnel/energy?apiKey=${AWS::StackName}-unbounce-key"
-  ShortFunnelAuth:
-    Description: "API Gateway endpoint URL for dev stage for api key validation in query string"
-    Value: !Sub "https://${ShortFunnelApi}.execute-api.${AWS::Region}.amazonaws.com/dev/auth?apiKey=${AWS::StackName}-unbounce-key"
-
+    Value: !Sub "https://${ShortFunnelApi}.execute-api.${AWS::Region}.amazonaws.com/dev/shortfunnel-energy?apiKey=${AWS::StackName}-unbounce-key"
