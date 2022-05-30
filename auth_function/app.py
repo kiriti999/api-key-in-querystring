@@ -50,14 +50,14 @@ class HttpVerb:
     ALL     = "*"
 
 class AuthPolicy(object):
-    awsAccountId = ""
     """The AWS account id the policy will be generated for. This is used to create the method ARNs."""
-    principalId = ""
+    awsAccountId = ""
     """The principal used for the policy, this should be a unique identifier for the end user."""
-    version = "2012-10-17"
+    principalId = ""
     """The policy version used for the evaluation. This should always be '2012-10-17'"""
-    pathRegex = "^[/.a-zA-Z0-9-\*]+$"
+    version = "2012-10-17"
     """The regular expression used to validate resource paths for the policy"""
+    pathRegex = "^[/.a-zA-Z0-9-\*]+$"
 
     """these are the internal lists of allowed and denied methods. These are lists
     of objects and each object has 2 properties: A resource ARN and a nullable
