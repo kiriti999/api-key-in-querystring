@@ -101,12 +101,12 @@ class AuthPolicy(object):
         if not resourcePattern.match(resource):
             raise NameError("Invalid resource path: " + resource + ". Path should match " + self.pathRegex)
 
-        print('resource[:1]' + resource[:1])
+        print('resource[:1]' , resource[:1])
 
         if resource[:1] == "/":
             resource = resource[1:]
 
-        print('resource' + resource)
+        print('resource' , resource)
         resourceArn = ("arn:aws:execute-api:" +
             self.region + ":" +
             self.awsAccountId + ":" +
@@ -115,7 +115,7 @@ class AuthPolicy(object):
             verb + "/" +
             resource)
 
-        print('resourceArn ' + resourceArn)
+        print('resourceArn ' , resourceArn)
 
         if effect.lower() == "allow":
             self.allowMethods.append({
@@ -158,7 +158,7 @@ class AuthPolicy(object):
 
             statements.append(statement)
 
-        print('statements ' + statements)
+        print('statements ', statements)
 
         return statements
 
