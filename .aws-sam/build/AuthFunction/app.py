@@ -96,17 +96,19 @@ class AuthPolicy(object):
         the internal list contains a resource ARN and a condition statement. The condition
         statement can be null."""
         if verb != "*" and not hasattr(HttpVerb, verb):
+            print("Invalid verb ", verb)
             raise NameError("Invalid HTTP verb " + verb + ". Allowed verbs in HttpVerb class")
         resourcePattern = re.compile(self.pathRegex)
         if not resourcePattern.match(resource):
+            print("Invalid resource path ", resource)
             raise NameError("Invalid resource path: " + resource + ". Path should match " + self.pathRegex)
 
-        print('resource[:1]' + resource[:1])
+        print('resource[:1]' , resource[:1])
 
         if resource[:1] == "/":
             resource = resource[1:]
 
-        print('resource' + resource)
+        print('resource' , resource)
         resourceArn = ("arn:aws:execute-api:" +
             self.region + ":" +
             self.awsAccountId + ":" +
@@ -115,7 +117,7 @@ class AuthPolicy(object):
             verb + "/" +
             resource)
 
-        print('resourceArn ' + resourceArn)
+        print('resourceArn ' , resourceArn)
 
         if effect.lower() == "allow":
             self.allowMethods.append({
@@ -158,7 +160,7 @@ class AuthPolicy(object):
 
             statements.append(statement)
 
-        print('statements ' + statements)
+        print('statements ', statements)
 
         return statements
 
