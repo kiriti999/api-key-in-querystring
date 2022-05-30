@@ -56,7 +56,7 @@ Resources:
                   ReauthorizeEvery: 0
                   QueryStrings:
                     - apiKey
-        DefinitionUri: swagger/v1.json
+        DefinitionUri: ./swagger/v1.json
 
   ApiKey:
     Type: AWS::ApiGateway::ApiKey
