@@ -212,7 +212,7 @@ Resources:
         Fn::Join:
         - ''
         - - Ref: AWS::StackName
-          - -ea-shortfunnel-key
+          - -unbounce-key
   UsagePlan:
     DependsOn: ShortFunnelApidevStage
     Type: AWS::ApiGateway::UsagePlan
@@ -234,8 +234,13 @@ Resources:
       UsagePlanId:
         Ref: UsagePlan
 Outputs:
-  HelloWorldApi:
+  ShortFunnelApiHealth:
     Description: API Gateway endpoint URL for dev stage for api key validation in
       query string
     Value:
-      Fn::Sub: https://${ShortFunnelApi}.execute-api.${AWS::Region}.amazonaws.com/dev/auth?apiKey=${AWS::StackName}-ea-shortfunnel-key
+      Fn::Sub: https://${ShortFunnelApi}.execute-api.${AWS::Region}.amazonaws.com/dev/shortfunnel/health?apiKey=${AWS::StackName}-unbounce-key
+  ShortFunnelApiEnergy:
+    Description: API Gateway endpoint URL for dev stage for api key validation in
+      query string
+    Value:
+      Fn::Sub: https://${ShortFunnelApi}.execute-api.${AWS::Region}.amazonaws.com/dev/shortfunnel/energy?apiKey=${AWS::StackName}-unbounce-key
