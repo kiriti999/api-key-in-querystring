@@ -38,6 +38,13 @@ Resources:
               Ref: ShortFunnelApi
             Path: /energy
             Method: post
+        testPost:
+          Type: Api
+          Properties:
+            RestApiId:
+              Ref: ShortFunnelApi
+            Path: /auth
+            Method: post
     Metadata:
       SamResourceId: BackendFunction
   ShortFunnelApi:
