@@ -57,7 +57,9 @@ class AuthPolicy(object):
     """The policy version used for the evaluation. This should always be '2012-10-17'"""
     version = "2012-10-17"
     """The regular expression used to validate resource paths for the policy"""
-    pathRegex = "^[/.a-zA-Z0-9-\*]+$"
+    # pathRegex = "^[/.a-zA-Z0-9-\*]+$"
+    pathRegex = "/[^/]+/?[^/]+"
+    # pathRegex = "/[^/][a-zA-Z0-9]+/?[^/][a-zA-Z0-9-\*]+"
 
     """these are the internal lists of allowed and denied methods. These are lists
     of objects and each object has 2 properties: A resource ARN and a nullable
