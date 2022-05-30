@@ -196,7 +196,7 @@ Resources:
                           example: Invalid request
   ApiKey:
     Type: AWS::ApiGateway::ApiKey
-    DependsOn: MyApidevStage
+    DependsOn: ShortFunnelApidevStage
     Properties:
       Name:
         Fn::Join:
@@ -214,7 +214,7 @@ Resources:
         - - Ref: AWS::StackName
           - -abcdefhijk1234567890
   UsagePlan:
-    DependsOn: MyApidevStage
+    DependsOn: ShortFunnelApidevStage
     Type: AWS::ApiGateway::UsagePlan
     Properties:
       ApiStages:
