@@ -38,12 +38,14 @@ functions:
 
       - http:
           method: post
+          type: request
           path: /shortfunnel-health
           authorizer:
             name: authorizer
 
       - http:
           method: post
+          type: request
           path: /shortfunnel-energy
           authorizer:
             name: authorizer
