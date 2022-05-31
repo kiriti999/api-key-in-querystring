@@ -167,7 +167,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/api-key-in-query-string-v2/dev/1654029808029-2022-05-31T20:43:28.029Z/api-key-in-query-string-v2.zip"
+          "S3Key": "serverless/api-key-in-query-string-v2/dev/1654030182266-2022-05-31T20:49:42.266Z/api-key-in-query-string-v2.zip"
         },
         "Handler": "./auth_function/app.lambda_handler",
         "Runtime": "python3.8",
@@ -193,7 +193,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/api-key-in-query-string-v2/dev/1654029808029-2022-05-31T20:43:28.029Z/api-key-in-query-string-v2.zip"
+          "S3Key": "serverless/api-key-in-query-string-v2/dev/1654030182266-2022-05-31T20:49:42.266Z/api-key-in-query-string-v2.zip"
         },
         "Handler": "./short_funnel/app.lambda_handler",
         "Runtime": "python3.8",
@@ -321,6 +321,53 @@
       },
       "DependsOn": "AuthorizerApiGatewayAuthorizer"
     },
+    "ApiGatewayMethodShortfunnelDashhealthPost": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "POST",
+        "RequestParameters": {},
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceShortfunnelDashhealth"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        },
+        "ApiKeyRequired": false,
+        "AuthorizationType": "CUSTOM",
+        "AuthorizerId": {
+          "Ref": "AuthorizerApiGatewayAuthorizer"
+        },
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "BackendFunctionLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        },
+        "MethodResponses": []
+      },
+      "DependsOn": "AuthorizerApiGatewayAuthorizer"
+    },
     "ApiGatewayMethodShortfunnelDashenergyPost": {
       "Type": "AWS::ApiGateway::Method",
       "Properties": {
@@ -403,7 +450,7 @@
         "Type": "TOKEN"
       }
     },
-    "ApiGatewayDeployment1654029805342": {
+    "ApiGatewayDeployment1654030179545": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -413,6 +460,7 @@
       },
       "DependsOn": [
         "ApiGatewayMethodShortfunnelDashhealthGet",
+        "ApiGatewayMethodShortfunnelDashhealthPost",
         "ApiGatewayMethodShortfunnelDashenergyPost"
       ]
     },
@@ -431,11 +479,11 @@
           }
         ]
       },
-      "DependsOn": "ApiGatewayDeployment1654029805342"
+      "DependsOn": "ApiGatewayDeployment1654030179545"
     },
     "ApiGatewayUsagePlan": {
       "Type": "AWS::ApiGateway::UsagePlan",
-      "DependsOn": "ApiGatewayDeployment1654029805342",
+      "DependsOn": "ApiGatewayDeployment1654030179545",
       "Properties": {
         "ApiStages": [
           {
