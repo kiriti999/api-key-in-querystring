@@ -1,4 +1,4 @@
-service: aws-node-http-api-project
+service: api-key-in-query-string-v2
 frameworkVersion: '3'
 configValidationMode: error
 
@@ -8,11 +8,20 @@ provider:
   # runtime: nodejs14.x
   runtime: python3.8
   timeout: 30
-  httpApi:
-    authorizers:
-      customAuthorizer:
-        type: request
-        functionName: authorizer
+  apiGateway:
+    apiKeys:
+      - ea-unbounce-key
+      - ${opt:stage}-ea-unbounce-key
+      - name: mySecondKey
+        description: Api key description # Optional
+    usagePlan:
+      quota:
+        limit: 5000
+        offset: 2
+        period: MONTH
+      throttle:
+        burstLimit: 200
+        rateLimit: 100
 
 functions:
   authorizer:
@@ -26,13 +35,13 @@ functions:
           method: get
           path: /shortfunnel-health
           authorizer:
-            name: customAuthorizer
+            name: authorizer
 
       - http:
           method: post
           path: /shortfunnel-energy
           authorizer:
-            name: customAuthorizer
+            name: authorizer
 
 resources:
   Resources:
