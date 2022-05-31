@@ -7,6 +7,11 @@ provider:
   # runtime: nodejs14.x
   runtime: python3.8
   timeout: 30
+  httpApi:
+    authorizers:
+      customAuthorizer:
+        type: request
+        functionName: MyAuthFunction
 
 functions:
   MyAuthFunction:
@@ -18,69 +23,211 @@ functions:
     events:
       - httpApi:
           method: get
-          path: /shortfunnel-health/
-          authorizer: MyAuthFunction
+          path: /shortfunnel-health
+          authorizer:
+            name: customAuthorizer
+
       - httpApi:
           method: post
           path: /shortfunnel-energy
-          authorizer: MyAuthFunction
+          authorizer:
+            name: customAuthorizer
 
 resources:
   Resources:
-    ShortFunnelApi:
-      DependsOn: MyAuthFunction
-      Type: AWS::Serverless::Api
-      Properties:
-        StageName: dev
-        EndpointConfiguration:
-          Type: REGIONAL
-        Auth:
-            DefaultAuthorizer: MyLambdaRequestAuthorizer
-            ApiKeyRequired: true
-            Authorizers:
-              MyLambdaRequestAuthorizer:
-                FunctionPayloadType: REQUEST
-                FunctionArn: !GetAtt MyAuthFunction.Arn
-                Identity:
-                  ReauthorizeEvery: 300
-                  QueryStrings:
-                    - apiKey
+    # ShortFunnelApi:
+    #   DependsOn: MyAuthFunction
+    #   Type: AWS::Serverless::Api
+    #   Properties:
+    #     StageName: dev
+    #     EndpointConfiguration:
+    #       Type: REGIONAL
+    #     Auth:
+    #         DefaultAuthorizer: MyLambdaRequestAuthorizer
+    #         ApiKeyRequired: true
+    #         Authorizers:
+    #           MyLambdaRequestAuthorizer:
+    #             FunctionPayloadType: REQUEST
+    #             FunctionArn: !GetAtt MyAuthFunction.Arn
+    #             Identity:
+    #               ReauthorizeEvery: 300
+    #               QueryStrings:
+    #                 - apiKey
+    #     DefinitionBody:
+    #       openapi: "3.0"
+    #       info:
+    #         version: "2021-08-10T13:18:57Z"
+    #         title: "ShortFunnel"
+    #       basePath: "/dev"
+    #       x-amazon-apigateway-api-key-source: "AUTHORIZER" #important
+    #       schemes:
+    #       - "https"
+    #       paths:
+    #         /shortfunnel-health:
+    #           post:
+    #             produces:
+    #               - application/json
+    #             parameters:
+    #               - in: query
+    #                 name: apiKey
+    #                 schema:
+    #                   type: string
+    #                 required: true
+    #             requestBody:
+    #               content:
+    #                 application/json:
+    #                   schema:
+    #                     $ref: "#/components/schemas/shortFunnelHealthEnergy"
+    #             responses:
+    #               "200":
+    #                 description: 200 response
+    #                 schema:
+    #                   $ref: "#/components/schemas/responses/200"
+    #               "400":
+    #                 description: 400 response
+    #                 schema:
+    #                   $ref: "#/components/schemas/responses/400"
+    #             x-amazon-apigateway-integration:
+    #               type: aws_proxy
+    #               httpMethod: POST
+    #               uri:
+    #                 Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${BackendFunction.Arn}/invocations
+    #               responses:
+    #                 default:
+    #                   statusCode: "200"
+    #               passthroughBehavior: when_no_match
+    #               contentHandling: CONVERT_TO_TEXT
 
-    ApiKey:
-      Type: AWS::ApiGateway::ApiKey
-      DependsOn: ShortFunnelApidevStage
-      Properties:
-        Name: !Join ["", [{"Ref": "AWS::StackName"}, "-apikey"]]
-        Enabled: true
-        StageKeys:
-          - RestApiId: !Ref ShortFunnelApi
-            StageName: dev
-        Value: !Join ["", [{"Ref": "AWS::StackName"}, "-unbounce-key"]]
+    #         /shortfunnel-energy:
+    #           post:
+    #             produces:
+    #               - application/json
+    #             parameters:
+    #               - in: query
+    #                 name: apiKey
+    #                 schema:
+    #                   type: string
+    #                 required: true
+    #             requestBody:
+    #               content:
+    #                 application/json:
+    #                   schema:
+    #                     $ref: "#/components/schemas/shortFunnelHealthEnergy"
+    #             responses:
+    #               "200":
+    #                 description: 200 response
+    #                 schema:
+    #                   $ref: "#/components/schemas/responses/200"
+    #               "400":
+    #                 description: 400 response
+    #                 schema:
+    #                   $ref: "#/components/schemas/responses/400"
+    #             x-amazon-apigateway-integration:
+    #               type: aws_proxy
+    #               httpMethod: POST
+    #               uri:
+    #                 Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${BackendFunction.Arn}/invocations
+    #               responses:
+    #                 default:
+    #                   statusCode: "200"
+    #               passthroughBehavior: when_no_match
+    #               contentHandling: CONVERT_TO_TEXT
 
-    UsagePlan:
-      DependsOn: ShortFunnelApidevStage
-      Type: AWS::ApiGateway::UsagePlan
-      Properties:
-        ApiStages:
-          - ApiId: !Ref ShortFunnelApi
-            Stage: dev
-        Throttle:
-          BurstLimit: 50
-          RateLimit: 100
-        UsagePlanName: MyUsagePlan
+    #       components:
+    #         schemas:
+    #           definitions:
+    #             Empty:
+    #               type: "object"
+    #               title: "Empty Schema"
+    #           shortFunnelHealthEnergy:
+    #             type: object
+    #             additionalProperties: false
+    #             required:
+    #               - firstName
+    #               - lastName
+    #               - email
+    #               - postCode
+    #               - mobileNumber
+    #             properties:
+    #               firstName:
+    #                 type: string
+    #               lastName:
+    #                 type: string
+    #               email:
+    #                 type: string
+    #               mobileNumber:
+    #                 type: string
+    #               postCode:
+    #                 type: string
+    #           responses:
+    #             "200":
+    #               description: success
+    #               content:
+    #                 application/json:
+    #                   schema:
+    #                     type: object
+    #                     properties:
+    #                       status:
+    #                         type: string
+    #                         example: "200"
+    #                       title:
+    #                         type: string
+    #                         example: Success
+    #                       detail:
+    #                         type: string
+    #                         example: Able to access resource
+    #             "400":
+    #               description: success
+    #               content:
+    #                 application/json:
+    #                   schema:
+    #                     type: object
+    #                     properties:
+    #                       status:
+    #                         type: string
+    #                         example: "400"
+    #                       title:
+    #                         type: string
+    #                         example: Bad request
+    #                       detail:
+    #                         type: string
+    #                         example: Invalid request
 
-    UsagePlanKey:
-      Type: AWS::ApiGateway::UsagePlanKey
-      Properties:
-        KeyId: !Ref ApiKey
-        KeyType: API_KEY
-        UsagePlanId: !Ref UsagePlan
+    # ApiKey:
+    #   Type: AWS::ApiGateway::ApiKey
+    #   DependsOn: ShortFunnelApi
+    #   Properties:
+    #     Name: !Join ["", [{"Ref": "AWS::StackName"}, "-apikey"]]
+    #     Enabled: true
+    #     StageKeys:
+    #       - RestApiId: !Ref ShortFunnelApi
+    #         StageName: dev
+    #     Value: !Join ["", [{"Ref": "AWS::StackName"}, "-unbounce-key"]]
+
+    # UsagePlan:
+    #   DependsOn: ShortFunnelApi
+    #   Type: AWS::ApiGateway::UsagePlan
+    #   Properties:
+    #     ApiStages:
+    #       - ApiId: !Ref ShortFunnelApi
+    #         Stage: dev
+    #     Throttle:
+    #       BurstLimit: 50
+    #       RateLimit: 100
+    #     UsagePlanName: MyUsagePlan
+
+    # UsagePlanKey:
+    #   Type: AWS::ApiGateway::UsagePlanKey
+    #   Properties:
+    #     KeyId: !Ref ApiKey
+    #     KeyType: API_KEY
+    #     UsagePlanId: !Ref UsagePlan
 
 
   Outputs:
     ShortFunnelApiHealth:
       Description: "API Gateway endpoint URL for dev stage for api key validation in query string"
-      Value: !Sub "https://${ShortFunnelApi}.execute-api.${AWS::Region}.amazonaws.com/dev/shortfunnel-health?apiKey=${AWS::StackName}-unbounce-key"
+      Value: !Sub "https://{sls:instanceId}.execute-api.${AWS::Region}.amazonaws.com/dev/shortfunnel-health?apiKey=${AWS::StackName}-unbounce-key"
     ShortFunnelApiEnergy:
       Description: "API Gateway endpoint URL for dev stage for api key validation in query string"
-      Value: !Sub "https://${ShortFunnelApi}.execute-api.${AWS::Region}.amazonaws.com/dev/shortfunnel-energy?apiKey=${AWS::StackName}-unbounce-key"
+      Value: !Sub "https://{sls:instanceId}.execute-api.${AWS::Region}.amazonaws.com/dev/shortfunnel-energy?apiKey=${AWS::StackName}-unbounce-key"
