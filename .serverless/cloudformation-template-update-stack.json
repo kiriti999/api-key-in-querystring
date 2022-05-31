@@ -71,10 +71,10 @@
         }
       }
     },
-    "MyAuthFunctionLogGroup": {
+    "AuthorizerLogGroup": {
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
-        "LogGroupName": "/aws/lambda/aws-node-http-api-project-dev-MyAuthFunction"
+        "LogGroupName": "/aws/lambda/aws-node-http-api-project-dev-authorizer"
       }
     },
     "BackendFunctionLogGroup": {
@@ -160,18 +160,18 @@
         }
       }
     },
-    "MyAuthFunctionLambdaFunction": {
+    "AuthorizerLambdaFunction": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
         "Code": {
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/aws-node-http-api-project/dev/1654027122957-2022-05-31T19:58:42.957Z/aws-node-http-api-project.zip"
+          "S3Key": "serverless/aws-node-http-api-project/dev/1654028469859-2022-05-31T20:21:09.859Z/aws-node-http-api-project.zip"
         },
         "Handler": "./auth_function/app.lambda_handler",
         "Runtime": "python3.8",
-        "FunctionName": "aws-node-http-api-project-dev-MyAuthFunction",
+        "FunctionName": "aws-node-http-api-project-dev-authorizer",
         "MemorySize": 1024,
         "Timeout": 30,
         "Description": "Extracts api key, authenticates against usage plan, allow/deny http methods and returns auth response object",
@@ -183,7 +183,7 @@
         }
       },
       "DependsOn": [
-        "MyAuthFunctionLogGroup"
+        "AuthorizerLogGroup"
       ]
     },
     "BackendFunctionLambdaFunction": {
@@ -193,7 +193,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/aws-node-http-api-project/dev/1654027122957-2022-05-31T19:58:42.957Z/aws-node-http-api-project.zip"
+          "S3Key": "serverless/aws-node-http-api-project/dev/1654028469859-2022-05-31T20:21:09.859Z/aws-node-http-api-project.zip"
         },
         "Handler": "./short_funnel/app.lambda_handler",
         "Runtime": "python3.8",
@@ -211,12 +211,12 @@
         "BackendFunctionLogGroup"
       ]
     },
-    "MyAuthFunctionLambdaVersionYbD9V3jKwqg8peHGxkPQ2APQOJE94eByoY52SFkSyZo": {
+    "AuthorizerLambdaVersion3vmmxFN77B57cv86EkCIL7ZGnqrQqoTwe2sjnmvQ": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
-          "Ref": "MyAuthFunctionLambdaFunction"
+          "Ref": "AuthorizerLambdaFunction"
         },
         "CodeSha256": "MI84a2eJcctYrtiNmABBjxMaJ8TLnWlIlzz4lzqTKpE=",
         "Description": "Extracts api key, authenticates against usage plan, allow/deny http methods and returns auth response object"
@@ -257,7 +257,7 @@
       "Properties": {
         "FunctionName": {
           "Fn::GetAtt": [
-            "MyAuthFunctionLambdaFunction",
+            "AuthorizerLambdaFunction",
             "Arn"
           ]
         },
@@ -314,7 +314,7 @@
               ":lambda:path/2015-03-31/functions/",
               {
                 "Fn::GetAtt": [
-                  "MyAuthFunctionLambdaFunction",
+                  "AuthorizerLambdaFunction",
                   "Arn"
                 ]
               },
@@ -438,13 +438,13 @@
         "Name": "sls-aws-node-http-api-project-dev-ServerlessDeploymentBucketName"
       }
     },
-    "MyAuthFunctionLambdaFunctionQualifiedArn": {
+    "AuthorizerLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "MyAuthFunctionLambdaVersionYbD9V3jKwqg8peHGxkPQ2APQOJE94eByoY52SFkSyZo"
+        "Ref": "AuthorizerLambdaVersion3vmmxFN77B57cv86EkCIL7ZGnqrQqoTwe2sjnmvQ"
       },
       "Export": {
-        "Name": "sls-aws-node-http-api-project-dev-MyAuthFunctionLambdaFunctionQualifiedArn"
+        "Name": "sls-aws-node-http-api-project-dev-AuthorizerLambdaFunctionQualifiedArn"
       }
     },
     "BackendFunctionLambdaFunctionQualifiedArn": {

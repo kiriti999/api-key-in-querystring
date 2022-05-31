@@ -4,6 +4,7 @@ configValidationMode: error
 
 provider:
   name: aws
+  region: ap-southeast-2
   # runtime: nodejs14.x
   runtime: python3.8
   timeout: 30
@@ -11,23 +12,23 @@ provider:
     authorizers:
       customAuthorizer:
         type: request
-        functionName: MyAuthFunction
+        functionName: authorizer
 
 functions:
-  MyAuthFunction:
+  authorizer:
     description: Extracts api key, authenticates against usage plan, allow/deny http methods and returns auth response object
     handler: ./auth_function/app.lambda_handler
 
   BackendFunction:
     handler: ./short_funnel/app.lambda_handler
     events:
-      - httpApi:
+      - http:
           method: get
           path: /shortfunnel-health
           authorizer:
             name: customAuthorizer
 
-      - httpApi:
+      - http:
           method: post
           path: /shortfunnel-energy
           authorizer:
@@ -35,8 +36,37 @@ functions:
 
 resources:
   Resources:
+    # Authorizer:
+    #   Type: AWS::ApiGateway::Authorizer
+    #   Properties:
+    #     Name: Authorizer
+    #     Type: REQUEST
+    #     AuthorizerUri:
+    #       Fn::Join: [ "",
+    #         [
+    #           "arn:aws:apigateway:",
+    #           "${self:custom.region}",
+    #           ":lambda:path/",
+    #           "2015-03-31/functions/",
+    #           Fn::GetAtt: ["AuthorizerLambdaFunction", "Arn" ],
+    #           "/invocations"
+    #         ]]
+    #     RestApiId:
+    #       Fn::ImportValue: api-gateway:${opt:stage}:rest-api-id
+    # apiGatewayLambdaPermissions:
+    #   Type: AWS::Lambda::Permission
+    #   Properties:
+    #     FunctionName:
+    #       Fn::GetAtt: [ AuthorizerLambdaFunction, Arn]
+    #     Action: lambda:InvokeFunction
+    #     Principal:
+    #       Fn::Join: [ "",
+    #       [
+    #         "apigateway.",
+    #         Ref: AWS::URLSuffix
+    #       ]]
     # ShortFunnelApi:
-    #   DependsOn: MyAuthFunction
+    #   DependsOn: authorizer
     #   Type: AWS::Serverless::Api
     #   Properties:
     #     StageName: dev
@@ -48,7 +78,7 @@ resources:
     #         Authorizers:
     #           MyLambdaRequestAuthorizer:
     #             FunctionPayloadType: REQUEST
-    #             FunctionArn: !GetAtt MyAuthFunction.Arn
+    #             FunctionArn: !GetAtt authorizer.Arn
     #             Identity:
     #               ReauthorizeEvery: 300
     #               QueryStrings:
