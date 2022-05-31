@@ -8,7 +8,6 @@ Globals:
   Api:
     OpenApiVersion: 3.0.1
 
-
 Resources:
   AuthFunction:
     Type: AWS::Serverless::Function
