@@ -11,10 +11,8 @@
       "timeout": 30,
       "apiGateway": {
         "apiKeys": [
-          "ea-unbounce-key",
-          "dev-ea-unbounce-key",
           {
-            "name": "mySecondKey",
+            "name": "unbounce-api-key",
             "description": "Api key description"
           }
         ],
@@ -201,7 +199,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/api-key-in-query-string-v2/dev/1654029313743-2022-05-31T20:35:13.743Z/api-key-in-query-string-v2.zip"
+                "S3Key": "serverless/api-key-in-query-string-v2/dev/1654029808029-2022-05-31T20:43:28.029Z/api-key-in-query-string-v2.zip"
               },
               "Handler": "./auth_function/app.lambda_handler",
               "Runtime": "python3.8",
@@ -227,7 +225,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/api-key-in-query-string-v2/dev/1654029313743-2022-05-31T20:35:13.743Z/api-key-in-query-string-v2.zip"
+                "S3Key": "serverless/api-key-in-query-string-v2/dev/1654029808029-2022-05-31T20:43:28.029Z/api-key-in-query-string-v2.zip"
               },
               "Handler": "./short_funnel/app.lambda_handler",
               "Runtime": "python3.8",
@@ -437,7 +435,7 @@
               "Type": "TOKEN"
             }
           },
-          "ApiGatewayDeployment1654029311123": {
+          "ApiGatewayDeployment1654029805342": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
@@ -454,39 +452,7 @@
             "Type": "AWS::ApiGateway::ApiKey",
             "Properties": {
               "Enabled": true,
-              "Name": "ea-unbounce-key",
-              "StageKeys": [
-                {
-                  "RestApiId": {
-                    "Ref": "ApiGatewayRestApi"
-                  },
-                  "StageName": "dev"
-                }
-              ]
-            },
-            "DependsOn": "ApiGatewayDeployment1654029311123"
-          },
-          "ApiGatewayApiKey2": {
-            "Type": "AWS::ApiGateway::ApiKey",
-            "Properties": {
-              "Enabled": true,
-              "Name": "dev-ea-unbounce-key",
-              "StageKeys": [
-                {
-                  "RestApiId": {
-                    "Ref": "ApiGatewayRestApi"
-                  },
-                  "StageName": "dev"
-                }
-              ]
-            },
-            "DependsOn": "ApiGatewayDeployment1654029311123"
-          },
-          "ApiGatewayApiKey3": {
-            "Type": "AWS::ApiGateway::ApiKey",
-            "Properties": {
-              "Enabled": true,
-              "Name": "mySecondKey",
+              "Name": "unbounce-api-key",
               "Description": "Api key description",
               "StageKeys": [
                 {
@@ -497,11 +463,11 @@
                 }
               ]
             },
-            "DependsOn": "ApiGatewayDeployment1654029311123"
+            "DependsOn": "ApiGatewayDeployment1654029805342"
           },
           "ApiGatewayUsagePlan": {
             "Type": "AWS::ApiGateway::UsagePlan",
-            "DependsOn": "ApiGatewayDeployment1654029311123",
+            "DependsOn": "ApiGatewayDeployment1654029805342",
             "Properties": {
               "ApiStages": [
                 {
@@ -529,30 +495,6 @@
             "Properties": {
               "KeyId": {
                 "Ref": "ApiGatewayApiKey1"
-              },
-              "KeyType": "API_KEY",
-              "UsagePlanId": {
-                "Ref": "ApiGatewayUsagePlan"
-              }
-            }
-          },
-          "ApiGatewayUsagePlanKey2": {
-            "Type": "AWS::ApiGateway::UsagePlanKey",
-            "Properties": {
-              "KeyId": {
-                "Ref": "ApiGatewayApiKey2"
-              },
-              "KeyType": "API_KEY",
-              "UsagePlanId": {
-                "Ref": "ApiGatewayUsagePlan"
-              }
-            }
-          },
-          "ApiGatewayUsagePlanKey3": {
-            "Type": "AWS::ApiGateway::UsagePlanKey",
-            "Properties": {
-              "KeyId": {
-                "Ref": "ApiGatewayApiKey3"
               },
               "KeyType": "API_KEY",
               "UsagePlanId": {
@@ -691,13 +633,13 @@
           "ShortFunnelApiHealth": {
             "Description": "API Gateway endpoint URL for dev stage for api key validation in query string",
             "Value": {
-              "Fn::Sub": "https://{sls:instanceId}.execute-api.${AWS::Region}.amazonaws.com/dev/shortfunnel-health?apiKey=${AWS::StackName}-unbounce-key"
+              "Fn::Sub": "https://{sls:instanceId}.execute-api.${AWS::Region}.amazonaws.com/dev/shortfunnel-health?apiKey=unbounce-api-key"
             }
           },
           "ShortFunnelApiEnergy": {
             "Description": "API Gateway endpoint URL for dev stage for api key validation in query string",
             "Value": {
-              "Fn::Sub": "https://{sls:instanceId}.execute-api.${AWS::Region}.amazonaws.com/dev/shortfunnel-energy?apiKey=${AWS::StackName}-unbounce-key"
+              "Fn::Sub": "https://{sls:instanceId}.execute-api.${AWS::Region}.amazonaws.com/dev/shortfunnel-energy?apiKey=unbounce-api-key"
             }
           }
         }
@@ -852,13 +794,13 @@
         "ShortFunnelApiHealth": {
           "Description": "API Gateway endpoint URL for dev stage for api key validation in query string",
           "Value": {
-            "Fn::Sub": "https://{sls:instanceId}.execute-api.${AWS::Region}.amazonaws.com/dev/shortfunnel-health?apiKey=${AWS::StackName}-unbounce-key"
+            "Fn::Sub": "https://{sls:instanceId}.execute-api.${AWS::Region}.amazonaws.com/dev/shortfunnel-health?apiKey=unbounce-api-key"
           }
         },
         "ShortFunnelApiEnergy": {
           "Description": "API Gateway endpoint URL for dev stage for api key validation in query string",
           "Value": {
-            "Fn::Sub": "https://{sls:instanceId}.execute-api.${AWS::Region}.amazonaws.com/dev/shortfunnel-energy?apiKey=${AWS::StackName}-unbounce-key"
+            "Fn::Sub": "https://{sls:instanceId}.execute-api.${AWS::Region}.amazonaws.com/dev/shortfunnel-energy?apiKey=unbounce-api-key"
           }
         }
       },
@@ -885,7 +827,7 @@
     "artifact": "D:\\projects\\practice\\aws\\api-key-in-querystring\\.serverless\\api-key-in-query-string-v2.zip"
   },
   "package": {
-    "artifactDirectoryName": "serverless/api-key-in-query-string-v2/dev/1654029313743-2022-05-31T20:35:13.743Z",
+    "artifactDirectoryName": "serverless/api-key-in-query-string-v2/dev/1654029808029-2022-05-31T20:43:28.029Z",
     "artifact": "api-key-in-query-string-v2.zip"
   }
 }
