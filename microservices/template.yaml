@@ -1,7 +1,7 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: >
-  APIKeyQueryString blog post.
+  api-key-in-query-string-v2
 Globals:
   Function:
     Timeout: 10
@@ -18,9 +18,9 @@ Resources:
   BackendFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: short_funnel/
-      Handler: app.lambda_handler
-      Runtime: python3.8
+      CodeUri: backend_function/
+      Handler: handler.lambda_handler
+      Runtime: nodejs14.x
       Events:
         health:
           Type: Api
