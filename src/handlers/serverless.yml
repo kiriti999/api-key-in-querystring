@@ -1,4 +1,4 @@
-service: api-key-in-query-string-v2
+service: api-key-in-query-string-sam1
 frameworkVersion: '3'
 configValidationMode: error
 
