@@ -59,14 +59,14 @@ var AuthPolicy = /** @class */ (function () {
                 resource = resource.slice(1);
             }
             resourceArn = "arn:aws:execute-api:" + this.region + ":" + this.awsAccountId + ":" + this.restApiId + "/" + this.stage + "/" + verb + "/" + resource;
-            if (effect.lower() === "allow") {
+            if (effect.toLowerCase() === "allow") {
                 this.allowMethods.append({
                     "resourceArn": resourceArn,
                     "conditions": conditions
                 });
             }
             else {
-                if (effect.lower() === "deny") {
+                if (effect.toLowerCase() === "deny") {
                     this.denyMethods.append({
                         "resourceArn": resourceArn,
                         "conditions": conditions
@@ -81,7 +81,7 @@ var AuthPolicy = /** @class */ (function () {
     AuthPolicy.prototype._getEmptyStatement = function (effect) {
         var statement = {
             "Action": "execute-api:Invoke",
-            "Effect": effect.slice(0, 1).upper() + effect.slice(1).lower(),
+            "Effect": effect.slice(0, 1).toUpperCase() + effect.slice(1).toLowerCase(),
             "Resource": []
         };
         return statement;
