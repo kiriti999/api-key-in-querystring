@@ -1,4 +1,4 @@
-export function lambda_handler(event, context) {
+function lambda_handler(event, context) {
     let apiGatewayArnTmp, apiKey, authResponse, awsAccountId, policy, principalId, tmp, usageIdentifierKey;
     console.log("event ", event);
     apiKey = event["queryStringParameters"]["apiKey"];
@@ -137,3 +137,5 @@ var AuthPolicy = /** @class */ (function () {
     };
     return AuthPolicy;
 }());
+
+module.exports = lambda_handler;

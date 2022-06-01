@@ -1,6 +1,6 @@
 const axios = require('axios');
 
-export const lambda_handler = async (event, context) => {
+const lambda_handler = async (event, context) => {
     console.log('lambda_handler:: event: ', event);
     let ip;
     try {
@@ -17,3 +17,5 @@ export const lambda_handler = async (event, context) => {
         })
     };
 }
+
+module.exports = lambda_handler;
