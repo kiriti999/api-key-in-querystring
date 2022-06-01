@@ -26,8 +26,9 @@ functions:
     description: Extracts api key, authenticates against usage plan, allow/deny http methods and returns auth response object
     handler: ./auth_function/app.lambda_handler
 
-  BackendFunction:
-    handler: ./short_funnel/app.lambda_handler
+  backendFunction:
+    handler: ./backend_function/handler.lambda_handler
+    runtime: nodejs14.x
     events:
       - http:
           method: get
@@ -140,7 +141,7 @@ resources:
     #               type: aws_proxy
     #               httpMethod: POST
     #               uri:
-    #                 Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${BackendFunction.Arn}/invocations
+    #                 Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${backendFunction.Arn}/invocations
     #               responses:
     #                 default:
     #                   statusCode: "200"
@@ -175,7 +176,7 @@ resources:
     #               type: aws_proxy
     #               httpMethod: POST
     #               uri:
-    #                 Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${BackendFunction.Arn}/invocations
+    #                 Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${backendFunction.Arn}/invocations
     #               responses:
     #                 default:
     #                   statusCode: "200"
