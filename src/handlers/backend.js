@@ -5,8 +5,9 @@ exports.lambda_handler = async (event) => {
     console.log('backend:: lambda_handler:: event: ', event);
     let ip;
     try {
-        ip = await axios.get('http://checkip.amazonaws.com/');
-        console.log('backend:: lambda_handler:: ip:', ip);
+        const result = await axios.get('http://checkip.amazonaws.com/');
+        ip = result.data;
+        console.log('backend:: lambda_handler:: ip data', ip);
     } catch (error) {
         console.error('backend:: lambda_handler::', error);
     }

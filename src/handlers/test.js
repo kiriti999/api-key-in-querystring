@@ -63,3 +63,11 @@ var result = (policy.policyDocument.Statement.concat(...resources));
 console.log('result ', result);
 
 console.log('policy ', policy);
+
+var ip = {
+    status: 200,
+    statusText: 'OK',
+    data: '54.206.74.254\n'
+}
+
+console.log('ip ', ip.data);
