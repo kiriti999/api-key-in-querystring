@@ -60,14 +60,14 @@ var AuthPolicy = /** @class */ (function () {
             }
             resourceArn = "arn:aws:execute-api:" + this.region + ":" + this.awsAccountId + ":" + this.restApiId + "/" + this.stage + "/" + verb + "/" + resource;
             if (effect.toLowerCase() === "allow") {
-                this.allowMethods.append({
+                this.allowMethods.push({
                     "resourceArn": resourceArn,
                     "conditions": conditions
                 });
             }
             else {
                 if (effect.toLowerCase() === "deny") {
-                    this.denyMethods.append({
+                    this.denyMethods.push({
                         "resourceArn": resourceArn,
                         "conditions": conditions
                     });
@@ -93,16 +93,16 @@ var AuthPolicy = /** @class */ (function () {
             statement = this._getEmptyStatement(effect);
             for (var curMethod in methods) {
                 if (curMethod["conditions"] === null || curMethod["conditions"].length === 0) {
-                    statement["Resource"].append(curMethod["resourceArn"]);
+                    statement["Resource"].push(curMethod["resourceArn"]);
                 }
                 else {
                     conditionalStatement = this._getEmptyStatement(effect);
-                    conditionalStatement["Resource"].append(curMethod["resourceArn"]);
+                    conditionalStatement["Resource"].push(curMethod["resourceArn"]);
                     conditionalStatement["Condition"] = curMethod["conditions"];
-                    statements.append(conditionalStatement);
+                    statements.push(conditionalStatement);
                 }
             }
-            statements.append(statement);
+            statements.push(statement);
             console.log("statements ", statements);
         }
         return statements;
