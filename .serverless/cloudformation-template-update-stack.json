@@ -74,13 +74,13 @@
     "AuthorizerLogGroup": {
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
-        "LogGroupName": "/aws/lambda/api-key-in-query-string-v2-dev-authorizer"
+        "LogGroupName": "/aws/lambda/api-key-in-query-string-v2-uat-authorizer"
       }
     },
     "BackendFunctionLogGroup": {
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
-        "LogGroupName": "/aws/lambda/api-key-in-query-string-v2-dev-BackendFunction"
+        "LogGroupName": "/aws/lambda/api-key-in-query-string-v2-uat-BackendFunction"
       }
     },
     "IamRoleLambdaExecution": {
@@ -109,7 +109,7 @@
                 "-",
                 [
                   "api-key-in-query-string-v2",
-                  "dev",
+                  "uat",
                   "lambda"
                 ]
               ]
@@ -125,7 +125,7 @@
                   ],
                   "Resource": [
                     {
-                      "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/api-key-in-query-string-v2-dev*:*"
+                      "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/api-key-in-query-string-v2-uat*:*"
                     }
                   ]
                 },
@@ -136,7 +136,7 @@
                   ],
                   "Resource": [
                     {
-                      "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/api-key-in-query-string-v2-dev*:*:*"
+                      "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/api-key-in-query-string-v2-uat*:*:*"
                     }
                   ]
                 }
@@ -150,7 +150,7 @@
             "-",
             [
               "api-key-in-query-string-v2",
-              "dev",
+              "uat",
               {
                 "Ref": "AWS::Region"
               },
@@ -167,11 +167,11 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/api-key-in-query-string-v2/dev/1654030608307-2022-05-31T20:56:48.307Z/api-key-in-query-string-v2.zip"
+          "S3Key": "serverless/api-key-in-query-string-v2/uat/1654031708363-2022-05-31T21:15:08.363Z/api-key-in-query-string-v2.zip"
         },
         "Handler": "./auth_function/app.lambda_handler",
         "Runtime": "python3.8",
-        "FunctionName": "api-key-in-query-string-v2-dev-authorizer",
+        "FunctionName": "api-key-in-query-string-v2-uat-authorizer",
         "MemorySize": 1024,
         "Timeout": 30,
         "Description": "Extracts api key, authenticates against usage plan, allow/deny http methods and returns auth response object",
@@ -193,11 +193,11 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/api-key-in-query-string-v2/dev/1654030608307-2022-05-31T20:56:48.307Z/api-key-in-query-string-v2.zip"
+          "S3Key": "serverless/api-key-in-query-string-v2/uat/1654031708363-2022-05-31T21:15:08.363Z/api-key-in-query-string-v2.zip"
         },
         "Handler": "./short_funnel/app.lambda_handler",
         "Runtime": "python3.8",
-        "FunctionName": "api-key-in-query-string-v2-dev-BackendFunction",
+        "FunctionName": "api-key-in-query-string-v2-uat-BackendFunction",
         "MemorySize": 1024,
         "Timeout": 30,
         "Role": {
@@ -211,31 +211,31 @@
         "BackendFunctionLogGroup"
       ]
     },
-    "AuthorizerLambdaVersionBY5gQxTmvV2EgOqExapmMvaG8tuMFHGI3v5xI28bJ7s": {
+    "AuthorizerLambdaVersionSifBkX41wOF3gtcoNWEYLoU8IeKlSHudJxbzDFhg": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "AuthorizerLambdaFunction"
         },
-        "CodeSha256": "MI84a2eJcctYrtiNmABBjxMaJ8TLnWlIlzz4lzqTKpE=",
+        "CodeSha256": "VgBTN8v+c5VjoWNB8d/1CwCSRpgkuyVBCtWs9gDWuUE=",
         "Description": "Extracts api key, authenticates against usage plan, allow/deny http methods and returns auth response object"
       }
     },
-    "BackendFunctionLambdaVersionAeF4VzVBSi6My8vP9GIxDFryojpBYBdKp5NgTi9j08": {
+    "BackendFunctionLambdaVersionu2piGTIa9eqRVhHNzf8pmF5PC8isdDpw6mPhSveqj3o": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "BackendFunctionLambdaFunction"
         },
-        "CodeSha256": "MI84a2eJcctYrtiNmABBjxMaJ8TLnWlIlzz4lzqTKpE="
+        "CodeSha256": "VgBTN8v+c5VjoWNB8d/1CwCSRpgkuyVBCtWs9gDWuUE="
       }
     },
     "ApiGatewayRestApi": {
       "Type": "AWS::ApiGateway::RestApi",
       "Properties": {
-        "Name": "dev-api-key-in-query-string-v2",
+        "Name": "uat-api-key-in-query-string-v2",
         "EndpointConfiguration": {
           "Types": [
             "EDGE"
@@ -447,16 +447,16 @@
             ]
           ]
         },
-        "Type": "TOKEN"
+        "Type": "REQUEST"
       }
     },
-    "ApiGatewayDeployment1654030605427": {
+    "ApiGatewayDeployment1654031705505": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
           "Ref": "ApiGatewayRestApi"
         },
-        "StageName": "dev"
+        "StageName": "uat"
       },
       "DependsOn": [
         "ApiGatewayMethodShortfunnelDashhealthGet",
@@ -468,49 +468,33 @@
       "Type": "AWS::ApiGateway::ApiKey",
       "Properties": {
         "Enabled": true,
-        "Name": "dev-unbounce-api-key",
-        "StageKeys": [
-          {
-            "RestApiId": {
-              "Ref": "ApiGatewayRestApi"
-            },
-            "StageName": "dev"
-          }
-        ]
-      },
-      "DependsOn": "ApiGatewayDeployment1654030605427"
-    },
-    "ApiGatewayApiKey2": {
-      "Type": "AWS::ApiGateway::ApiKey",
-      "Properties": {
-        "Enabled": true,
-        "Name": "unbounce-api-key",
+        "Value": "uat-unbounce-api-key",
         "Description": "Api key description",
         "StageKeys": [
           {
             "RestApiId": {
               "Ref": "ApiGatewayRestApi"
             },
-            "StageName": "dev"
+            "StageName": "uat"
           }
         ]
       },
-      "DependsOn": "ApiGatewayDeployment1654030605427"
+      "DependsOn": "ApiGatewayDeployment1654031705505"
     },
     "ApiGatewayUsagePlan": {
       "Type": "AWS::ApiGateway::UsagePlan",
-      "DependsOn": "ApiGatewayDeployment1654030605427",
+      "DependsOn": "ApiGatewayDeployment1654031705505",
       "Properties": {
         "ApiStages": [
           {
             "ApiId": {
               "Ref": "ApiGatewayRestApi"
             },
-            "Stage": "dev"
+            "Stage": "uat"
           }
         ],
-        "Description": "Usage plan for api-key-in-query-string-v2 dev stage",
-        "UsagePlanName": "api-key-in-query-string-v2-dev",
+        "Description": "Usage plan for api-key-in-query-string-v2 uat stage",
+        "UsagePlanName": "api-key-in-query-string-v2-uat",
         "Quota": {
           "Limit": 5000,
           "Offset": 2,
@@ -527,18 +511,6 @@
       "Properties": {
         "KeyId": {
           "Ref": "ApiGatewayApiKey1"
-        },
-        "KeyType": "API_KEY",
-        "UsagePlanId": {
-          "Ref": "ApiGatewayUsagePlan"
-        }
-      }
-    },
-    "ApiGatewayUsagePlanKey2": {
-      "Type": "AWS::ApiGateway::UsagePlanKey",
-      "Properties": {
-        "KeyId": {
-          "Ref": "ApiGatewayApiKey2"
         },
         "KeyType": "API_KEY",
         "UsagePlanId": {
@@ -627,25 +599,25 @@
         "Ref": "ServerlessDeploymentBucket"
       },
       "Export": {
-        "Name": "sls-api-key-in-query-string-v2-dev-ServerlessDeploymentBucketName"
+        "Name": "sls-api-key-in-query-string-v2-uat-ServerlessDeploymentBucketName"
       }
     },
     "AuthorizerLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "AuthorizerLambdaVersionBY5gQxTmvV2EgOqExapmMvaG8tuMFHGI3v5xI28bJ7s"
+        "Ref": "AuthorizerLambdaVersionSifBkX41wOF3gtcoNWEYLoU8IeKlSHudJxbzDFhg"
       },
       "Export": {
-        "Name": "sls-api-key-in-query-string-v2-dev-AuthorizerLambdaFunctionQualifiedArn"
+        "Name": "sls-api-key-in-query-string-v2-uat-AuthorizerLambdaFunctionQualifiedArn"
       }
     },
     "BackendFunctionLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "BackendFunctionLambdaVersionAeF4VzVBSi6My8vP9GIxDFryojpBYBdKp5NgTi9j08"
+        "Ref": "BackendFunctionLambdaVersionu2piGTIa9eqRVhHNzf8pmF5PC8isdDpw6mPhSveqj3o"
       },
       "Export": {
-        "Name": "sls-api-key-in-query-string-v2-dev-BackendFunctionLambdaFunctionQualifiedArn"
+        "Name": "sls-api-key-in-query-string-v2-uat-BackendFunctionLambdaFunctionQualifiedArn"
       }
     },
     "ServiceEndpoint": {
@@ -666,24 +638,24 @@
             {
               "Ref": "AWS::URLSuffix"
             },
-            "/dev"
+            "/uat"
           ]
         ]
       },
       "Export": {
-        "Name": "sls-api-key-in-query-string-v2-dev-ServiceEndpoint"
+        "Name": "sls-api-key-in-query-string-v2-uat-ServiceEndpoint"
       }
     },
     "ShortFunnelApiHealth": {
       "Description": "API Gateway endpoint URL for dev stage for api key validation in query string",
       "Value": {
-        "Fn::Sub": "https://{sls:instanceId}.execute-api.${AWS::Region}.amazonaws.com/dev/shortfunnel-health?apiKey=dev-unbounce-api-key"
+        "Fn::Sub": "https://{sls:instanceId}.execute-api.${AWS::Region}.amazonaws.com/dev/shortfunnel-health?apiKey=uat-unbounce-api-key"
       }
     },
     "ShortFunnelApiEnergy": {
       "Description": "API Gateway endpoint URL for dev stage for api key validation in query string",
       "Value": {
-        "Fn::Sub": "https://{sls:instanceId}.execute-api.${AWS::Region}.amazonaws.com/dev/shortfunnel-energy?apiKey=dev-unbounce-api-key"
+        "Fn::Sub": "https://{sls:instanceId}.execute-api.${AWS::Region}.amazonaws.com/dev/shortfunnel-energy?apiKey=uat-unbounce-api-key"
       }
     }
   }

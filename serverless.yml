@@ -1,4 +1,4 @@
-service: api-key-in-query-string-v2
+sservice: api-key-in-query-string-v2
 frameworkVersion: '3'
 configValidationMode: error
 
@@ -31,12 +31,15 @@ functions:
     events:
       - http:
           method: get
-          path: /shortfunnel-health
+          cors: true
+          path: /auth
           authorizer:
             name: authorizer
+            type: request
 
       - http:
           method: post
+          cors: true
           path: /shortfunnel-health
           authorizer:
             name: authorizer
@@ -44,6 +47,7 @@ functions:
 
       - http:
           method: post
+          cors: true
           path: /shortfunnel-energy
           authorizer:
             name: authorizer
@@ -272,7 +276,10 @@ resources:
   Outputs:
     ShortFunnelApiHealth:
       Description: "API Gateway endpoint URL for dev stage for api key validation in query string"
-      Value: !Sub "https://{sls:instanceId}.execute-api.${AWS::Region}.amazonaws.com/dev/shortfunnel-health?apiKey=${opt:stage}-unbounce-api-key"
+      Value: !Sub "https://{sls:instanceId}.execute-api.${AWS::Region}.amazonaws.com/${opt:stage}/auth?apiKey=${opt:stage}-unbounce-api-key"
+    ShortFunnelApiHealth:
+      Description: "API Gateway endpoint URL for dev stage for api key validation in query string"
+      Value: !Sub "https://{sls:instanceId}.execute-api.${AWS::Region}.amazonaws.com/${opt:stage}/shortfunnel-health?apiKey=${opt:stage}-unbounce-api-key"
     ShortFunnelApiEnergy:
       Description: "API Gateway endpoint URL for dev stage for api key validation in query string"
-      Value: !Sub "https://{sls:instanceId}.execute-api.${AWS::Region}.amazonaws.com/dev/shortfunnel-energy?apiKey=${opt:stage}-unbounce-api-key"
+      Value: !Sub "https://{sls:instanceId}.execute-api.${AWS::Region}.amazonaws.com/${opt:stage}/shortfunnel-energy?apiKey=${opt:stage}-unbounce-api-key"
