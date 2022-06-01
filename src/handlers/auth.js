@@ -35,7 +35,7 @@ const HttpVerb = {
 var AuthPolicy = /** @class */ (function () {
     function AuthPolicy(principal, awsAccountId) {
         this.version = "2012-10-17";
-        this.pathRegex = "/[^/][a-zA-Z0-9]+/?[^/][a-zA-Z0-9-\*]+";
+        this.pathRegex = new RegExp('/[^/][a-zA-Z0-9]+/?[^/][a-zA-Z0-9-\*]+/');
         this.restApiId = "<<restApiId>>";
         this.region = "<<region>>";
         this.stage = "<<stage>>";
