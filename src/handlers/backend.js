@@ -1,5 +1,4 @@
 const axios = require('axios');
-var http = require('http');
 
 exports.lambda_handler = async (event) => {
     console.log('backend:: lambda_handler:: event: ', event);
