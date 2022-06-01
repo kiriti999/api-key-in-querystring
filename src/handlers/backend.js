@@ -1,7 +1,7 @@
 const axios = require('axios');
 
 exports.lambda_handler = async (event) => {
-    console.log('backend:: lambda_handler:: event: ', event);
+    console.log('backend:: lambda_handler:: event: ', event.body);
     let ip;
     let res = {};
     try {
@@ -11,6 +11,7 @@ exports.lambda_handler = async (event) => {
         res = {
             statusCode: 200,
             body: JSON.stringify({
+                "data": event.body,
                 "message": "Hello from Lambda backend.",
                 "yourIpAddress": ip
             })
