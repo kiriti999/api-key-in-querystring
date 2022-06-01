@@ -74,7 +74,6 @@ var AuthPolicy = /** @class */ (function () {
                     });
                 }
             }
-            console.log('AuthPolicy.prototype._addMethod:: resource: ', resource);
             console.log('AuthPolicy.prototype._addMethod:: resourceArn: ', resourceArn);
         } catch (error) {
             console.log('_addMethod:: error:', error);
@@ -82,32 +81,42 @@ var AuthPolicy = /** @class */ (function () {
 
     };
     AuthPolicy.prototype._getEmptyStatement = function (effect) {
-        var statement = {
-            "Action": "execute-api:Invoke",
-            "Effect": effect.slice(0, 1).toUpperCase() + effect.slice(1).toLowerCase(),
-            "Resource": []
-        };
+        try {
+            var statement = {
+                "Action": "execute-api:Invoke",
+                "Effect": effect.slice(0, 1).toUpperCase() + effect.slice(1).toLowerCase(),
+                "Resource": []
+            };
+        } catch (error) {
+            console.log('AuthPolicy.prototype._getEmptyStatement:: error: ', error);
+        }
         return statement;
     };
     AuthPolicy.prototype._getStatementForEffect = function (effect, methods) {
+        console.log('AuthPolicy.prototype._getStatementForEffect:: methods: ', methods);
         var conditionalStatement, statement, statements;
         statements = [];
-        if (methods.length > 0) {
-            statement = this._getEmptyStatement(effect);
-            for (var curMethod in methods) {
-                if (curMethod["conditions"] === null || curMethod["conditions"].length === 0) {
-                    statement["Resource"].push(curMethod["resourceArn"]);
+        try {
+            if (methods.length > 0) {
+                statement = this._getEmptyStatement(effect);
+                for (var curMethod in methods) {
+                    if (curMethod["conditions"] === null || curMethod["conditions"].length === 0) {
+                        statement["Resource"].push(curMethod["resourceArn"]);
+                    }
+                    else {
+                        conditionalStatement = this._getEmptyStatement(effect);
+                        conditionalStatement["Resource"].push(curMethod["resourceArn"]);
+                        conditionalStatement["Condition"] = curMethod["conditions"];
+                        statements.push(conditionalStatement);
+                    }
                 }
-                else {
-                    conditionalStatement = this._getEmptyStatement(effect);
-                    conditionalStatement["Resource"].push(curMethod["resourceArn"]);
-                    conditionalStatement["Condition"] = curMethod["conditions"];
-                    statements.push(conditionalStatement);
-                }
+                statements.push(statement);
+                console.log("AuthPolicy.prototype._getStatementForEffect:: statements: ", statements);
             }
-            statements.push(statement);
-            console.log("statements ", statements);
+        } catch (error) {
+            console.log("AuthPolicy.prototype._getStatementForEffect:: error: ", error);
         }
+
         return statements;
     };
     AuthPolicy.prototype.allowAllMethods = function () {
@@ -130,22 +139,26 @@ var AuthPolicy = /** @class */ (function () {
     };
     AuthPolicy.prototype.build = function () {
         var policy;
-        if ((this.allowMethods === null || this.allowMethods.length === 0) && (this.denyMethods === null || this.denyMethods.length === 0)) {
-            console.log("No statements defined for the policy");
-            throw new Error("No statements defined for the policy");
-        }
-        policy = {
-            "principalId": this.principalId,
-            "policyDocument": {
-                "Version": this.version,
-                "Statement": []
+        try {
+            if ((this.allowMethods === null || this.allowMethods.length === 0) && (this.denyMethods === null || this.denyMethods.length === 0)) {
+                console.log("No statements defined for the policy");
+                throw new Error("No statements defined for the policy");
             }
-        };
-        console.log('AuthPolicy.prototype.build:: this.allowMethods: ', this.allowMethods);
-        console.log('AuthPolicy.prototype.build:: this.denyMethods: ', this.denyMethods);
+            policy = {
+                "principalId": this.principalId,
+                "policyDocument": {
+                    "Version": this.version,
+                    "Statement": []
+                }
+            };
+            console.log('AuthPolicy.prototype.build:: this.allowMethods: ', this.allowMethods);
 
-        policy["policyDocument"]["Statement"].concat(this._getStatementForEffect("Allow", this.allowMethods));
-        policy["policyDocument"]["Statement"].concat(this._getStatementForEffect("Deny", this.denyMethods));
+            policy["policyDocument"]["Statement"].concat(this._getStatementForEffect("Allow", this.allowMethods));
+            policy["policyDocument"]["Statement"].concat(this._getStatementForEffect("Deny", this.denyMethods));
+        } catch (error) {
+            console.log('AuthPolicy.prototype.build:: error: ', error);
+        }
+
         console.log('AuthPolicy.prototype.build:: policy: ', policy);
         return policy;
     };
