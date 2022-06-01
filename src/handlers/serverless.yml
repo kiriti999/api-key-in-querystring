@@ -24,10 +24,10 @@ provider:
 functions:
   authorizer:
     description: Extracts api key, authenticates against usage plan, allow/deny http methods and returns auth response object
-    handler: ./auth_function/handler.lambda_handler
+    handler: ./auth.lambda_handler
 
   backendFunction:
-    handler: ./backend_function/handler.lambda_handler
+    handler: ./backend.lambda_handler
     runtime: nodejs14.x
     events:
       - http:

@@ -12,14 +12,14 @@ Resources:
   authFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: auth_function/
-      Handler: handler.lambda_handler
+      CodeUri: .
+      Handler: auth.lambda_handler
       Runtime: nodejs14.x
   backendFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: backend_function/
-      Handler: handler.lambda_handler
+      CodeUri: ./
+      Handler: backend.lambda_handler
       Runtime: nodejs14.x
       Events:
         health:
