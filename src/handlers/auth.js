@@ -146,6 +146,7 @@ var AuthPolicy = /** @class */ (function () {
 
         policy["policyDocument"]["Statement"].concat(this._getStatementForEffect("Allow", this.allowMethods));
         policy["policyDocument"]["Statement"].concat(this._getStatementForEffect("Deny", this.denyMethods));
+        console.log('AuthPolicy.prototype.build:: policy: ', policy);
         return policy;
     };
     return AuthPolicy;
