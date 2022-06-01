@@ -26,18 +26,18 @@ Resources:
           Type: Api
           Properties:
             RestApiId:
-              Ref: ShortFunnelApi
+              Ref: shortFunnelApi
             Path: /shortfunnel-health
             Method: post
         energy:
           Type: Api
           Properties:
             RestApiId:
-              Ref: ShortFunnelApi
+              Ref: shortFunnelApi
             Path: /shortfunnel-energy
             Method: post
 
-  ShortFunnelApi:
+  shortFunnelApi:
       DependsOn: authFunction
       Type: AWS::Serverless::Api
       Properties:
@@ -59,7 +59,7 @@ Resources:
           openapi: "3.0"
           info:
             version: "2021-08-10T13:18:57Z"
-            title: "ShortFunnel"
+            title: "shortFunnel"
           basePath: "/dev"
           x-amazon-apigateway-api-key-source: "AUTHORIZER" #important
           schemes:
@@ -197,21 +197,21 @@ Resources:
 
   ApiKey:
     Type: AWS::ApiGateway::ApiKey
-    DependsOn: ShortFunnelApidevStage
+    DependsOn: shortFunnelApidevStage
     Properties:
       Name: !Join ["", [{"Ref": "AWS::StackName"}, "-apikey"]]
       Enabled: true
       StageKeys:
-        - RestApiId: !Ref ShortFunnelApi
+        - RestApiId: !Ref shortFunnelApi
           StageName: dev
       Value: !Join ["", ["sam", "-unbounce-api-key"]]
 
   UsagePlan:
-    DependsOn: ShortFunnelApidevStage
+    DependsOn: shortFunnelApidevStage
     Type: AWS::ApiGateway::UsagePlan
     Properties:
       ApiStages:
-        - ApiId: !Ref ShortFunnelApi
+        - ApiId: !Ref shortFunnelApi
           Stage: dev
       Throttle:
         BurstLimit: 50
@@ -226,9 +226,9 @@ Resources:
       UsagePlanId: !Ref UsagePlan
 
 Outputs:
-  ShortFunnelApiHealth:
+  shortFunnelApiHealth:
     Description: "API Gateway endpoint URL for dev stage for api key validation in query string"
-    Value: !Sub "https://${ShortFunnelApi}.execute-api.${AWS::Region}.amazonaws.com/dev/shortfunnel-health?apiKey=sam-unbounce-api-key"
-  ShortFunnelApiEnergy:
+    Value: !Sub "https://${shortFunnelApi}.execute-api.${AWS::Region}.amazonaws.com/dev/shortfunnel-health?apiKey=sam-unbounce-api-key"
+  shortFunnelApiEnergy:
     Description: "API Gateway endpoint URL for dev stage for api key validation in query string"
-    Value: !Sub "https://${ShortFunnelApi}.execute-api.${AWS::Region}.amazonaws.com/dev/shortfunnel-energy?apiKey=sam-unbounce-api-key"
+    Value: !Sub "https://${shortFunnelApi}.execute-api.${AWS::Region}.amazonaws.com/dev/shortfunnel-energy?apiKey=sam-unbounce-api-key"
