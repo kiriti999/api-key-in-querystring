@@ -275,7 +275,7 @@ resources:
 
 
   Outputs:
-    ShortFunnelApiHealth:
+    ShortFunnelAuth:
       Description: "API Gateway endpoint URL for dev stage for api key validation in query string"
       Value: !Sub "https://{sls:instanceId}.execute-api.${AWS::Region}.amazonaws.com/${opt:stage}/auth?apiKey=${opt:stage}-unbounce-api-key"
     ShortFunnelApiHealth:
