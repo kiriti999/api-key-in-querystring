@@ -58,6 +58,7 @@ var AuthPolicy = /** @class */ (function () {
             if (resource.slice(0, 1) === "/") {
                 resource = resource.slice(1);
             }
+
             resourceArn = "arn:aws:execute-api:" + this.region + ":" + this.awsAccountId + ":" + this.restApiId + "/" + this.stage + "/" + verb + "/" + resource;
             if (effect.toLowerCase() === "allow") {
                 this.allowMethods.push({
@@ -73,6 +74,8 @@ var AuthPolicy = /** @class */ (function () {
                     });
                 }
             }
+            console.log('AuthPolicy.prototype._addMethod:: resource: ', resource);
+            console.log('AuthPolicy.prototype._addMethod:: resourceArn: ', resourceArn);
         } catch (error) {
             console.log('_addMethod:: error:', error);
         }
@@ -138,6 +141,9 @@ var AuthPolicy = /** @class */ (function () {
                 "Statement": []
             }
         };
+        console.log('AuthPolicy.prototype.build:: this.allowMethods: ', this.allowMethods);
+        console.log('AuthPolicy.prototype.build:: this.denyMethods: ', this.denyMethods);
+
         policy["policyDocument"]["Statement"].concat(this._getStatementForEffect("Allow", this.allowMethods));
         policy["policyDocument"]["Statement"].concat(this._getStatementForEffect("Deny", this.denyMethods));
         return policy;
