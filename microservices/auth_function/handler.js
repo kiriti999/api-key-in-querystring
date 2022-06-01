@@ -131,8 +131,6 @@ var AuthPolicy = /** @class */ (function () {
                 "Statement": []
             }
         };
-        // doc.Statement = doc.Statement.concat(getStatementsForEffect.call(this, "Allow", this.allowMethods));
-        // doc.Statement = doc.Statement.concat(getStatementsForEffect.call(this, "Deny", this.denyMethods));
         policy["policyDocument"]["Statement"].concat(this._getStatementForEffect("Allow", this.allowMethods));
         policy["policyDocument"]["Statement"].concat(this._getStatementForEffect("Deny", this.denyMethods));
         return policy;

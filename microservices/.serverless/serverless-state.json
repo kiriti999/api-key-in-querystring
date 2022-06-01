@@ -199,9 +199,9 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/api-key-in-query-string-v2/dev/1654087422738-2022-06-01T12:43:42.738Z/api-key-in-query-string-v2.zip"
+                "S3Key": "serverless/api-key-in-query-string-v2/dev/1654087483902-2022-06-01T12:44:43.902Z/api-key-in-query-string-v2.zip"
               },
-              "Handler": "./auth_function/app.lambda_handler",
+              "Handler": "./auth_function/handler.lambda_handler",
               "Runtime": "python3.8",
               "FunctionName": "api-key-in-query-string-v2-dev-authorizer",
               "MemorySize": 1024,
@@ -225,7 +225,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/api-key-in-query-string-v2/dev/1654087422738-2022-06-01T12:43:42.738Z/api-key-in-query-string-v2.zip"
+                "S3Key": "serverless/api-key-in-query-string-v2/dev/1654087483902-2022-06-01T12:44:43.902Z/api-key-in-query-string-v2.zip"
               },
               "Handler": "./backend_function/handler.lambda_handler",
               "Runtime": "nodejs14.x",
@@ -243,25 +243,25 @@
               "BackendFunctionLogGroup"
             ]
           },
-          "AuthorizerLambdaVersionVL5lZTSuVX4gvuP6E6PEQg60jcgGU3zJEX6er8oJOg": {
+          "AuthorizerLambdaVersionWHQIpU8N72NDniLRDwm9oEoLhjeJ6PErw2jzcEiqD8": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "AuthorizerLambdaFunction"
               },
-              "CodeSha256": "NtT0HdrPBQIKU5+Kq70/5xZszxNfjPkgwThfxaYJcx8=",
+              "CodeSha256": "PRtSAxU9dWNYMJRqVJ385zFe+tiovtX/6VrD8g02yOE=",
               "Description": "Extracts api key, authenticates against usage plan, allow/deny http methods and returns auth response object"
             }
           },
-          "BackendFunctionLambdaVersion0A4SqIVstwuMKb1iTIvPZKbbe0DPqDHxiyR6WXfXA": {
+          "BackendFunctionLambdaVersionJxmOa4GhvN47V80VGUXkpeWOAe9waaFOE1S8YhAgzc": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "BackendFunctionLambdaFunction"
               },
-              "CodeSha256": "NtT0HdrPBQIKU5+Kq70/5xZszxNfjPkgwThfxaYJcx8="
+              "CodeSha256": "PRtSAxU9dWNYMJRqVJ385zFe+tiovtX/6VrD8g02yOE="
             }
           },
           "ApiGatewayRestApi": {
@@ -632,7 +632,7 @@
               "Type": "REQUEST"
             }
           },
-          "ApiGatewayDeployment1654087417581": {
+          "ApiGatewayDeployment1654087478319": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
@@ -664,11 +664,11 @@
                 }
               ]
             },
-            "DependsOn": "ApiGatewayDeployment1654087417581"
+            "DependsOn": "ApiGatewayDeployment1654087478319"
           },
           "ApiGatewayUsagePlan": {
             "Type": "AWS::ApiGateway::UsagePlan",
-            "DependsOn": "ApiGatewayDeployment1654087417581",
+            "DependsOn": "ApiGatewayDeployment1654087478319",
             "Properties": {
               "ApiStages": [
                 {
@@ -790,7 +790,7 @@
           "AuthorizerLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "AuthorizerLambdaVersionVL5lZTSuVX4gvuP6E6PEQg60jcgGU3zJEX6er8oJOg"
+              "Ref": "AuthorizerLambdaVersionWHQIpU8N72NDniLRDwm9oEoLhjeJ6PErw2jzcEiqD8"
             },
             "Export": {
               "Name": "sls-api-key-in-query-string-v2-dev-AuthorizerLambdaFunctionQualifiedArn"
@@ -799,7 +799,7 @@
           "BackendFunctionLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "BackendFunctionLambdaVersion0A4SqIVstwuMKb1iTIvPZKbbe0DPqDHxiyR6WXfXA"
+              "Ref": "BackendFunctionLambdaVersionJxmOa4GhvN47V80VGUXkpeWOAe9waaFOE1S8YhAgzc"
             },
             "Export": {
               "Name": "sls-api-key-in-query-string-v2-dev-BackendFunctionLambdaFunctionQualifiedArn"
@@ -939,7 +939,7 @@
     "functions": {
       "authorizer": {
         "description": "Extracts api key, authenticates against usage plan, allow/deny http methods and returns auth response object",
-        "handler": "./auth_function/app.lambda_handler",
+        "handler": "./auth_function/handler.lambda_handler",
         "events": [],
         "name": "api-key-in-query-string-v2-dev-authorizer",
         "package": {},
@@ -947,7 +947,7 @@
         "timeout": 30,
         "runtime": "python3.8",
         "vpc": {},
-        "versionLogicalId": "AuthorizerLambdaVersionVL5lZTSuVX4gvuP6E6PEQg60jcgGU3zJEX6er8oJOg"
+        "versionLogicalId": "AuthorizerLambdaVersionWHQIpU8N72NDniLRDwm9oEoLhjeJ6PErw2jzcEiqD8"
       },
       "backendFunction": {
         "handler": "./backend_function/handler.lambda_handler",
@@ -1061,7 +1061,7 @@
         "memory": 1024,
         "timeout": 30,
         "vpc": {},
-        "versionLogicalId": "BackendFunctionLambdaVersion0A4SqIVstwuMKb1iTIvPZKbbe0DPqDHxiyR6WXfXA"
+        "versionLogicalId": "BackendFunctionLambdaVersionJxmOa4GhvN47V80VGUXkpeWOAe9waaFOE1S8YhAgzc"
       }
     },
     "resources": {
@@ -1108,7 +1108,7 @@
     "artifact": "D:\\projects\\practice\\aws\\api-key-in-querystring\\microservices\\.serverless\\api-key-in-query-string-v2.zip"
   },
   "package": {
-    "artifactDirectoryName": "serverless/api-key-in-query-string-v2/dev/1654087422738-2022-06-01T12:43:42.738Z",
+    "artifactDirectoryName": "serverless/api-key-in-query-string-v2/dev/1654087483902-2022-06-01T12:44:43.902Z",
     "artifact": "api-key-in-query-string-v2.zip"
   }
 }
