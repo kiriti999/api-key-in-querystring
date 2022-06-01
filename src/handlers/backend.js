@@ -13,7 +13,7 @@ exports.lambda_handler = async (event) => {
         "statusCode": 200,
         "body": JSON.stringify({
             "message": "Hello from Lambda backend.",
-            "yourIpAddress": ip.text.replace("\n", "")
+            "yourIpAddress": ip
         })
     };
 };
