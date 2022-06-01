@@ -1,5 +1,5 @@
-function lambda_handler(event, context) {
-    var apiGatewayArnTmp, apiKey, authResponse, awsAccountId, policy, principalId, tmp, usageIdentifierKey;
+export function lambda_handler(event, context) {
+    let apiGatewayArnTmp, apiKey, authResponse, awsAccountId, policy, principalId, tmp, usageIdentifierKey;
     console.log("event ", event);
     apiKey = event["queryStringParameters"]["apiKey"];
     principalId = "user|a1b2c3d4";
@@ -10,11 +10,11 @@ function lambda_handler(event, context) {
     policy.restApiId = apiGatewayArnTmp[0];
     policy.region = tmp[3];
     policy.stage = apiGatewayArnTmp[1];
-    policy.allowMethod("GET", "/auth");
-    policy.allowMethod("GET", "/shortfunnel-health");
-    policy.allowMethod("GET", "/shortfunnel-energy");
-    policy.allowMethod("POST", "/shortfunnel-health");
-    policy.allowMethod("POST", "/shortfunnel-energy");
+    policy.allowMethod(HttpVerb.GET, "/auth");
+    policy.allowMethod(HttpVerb.GET, "/shortfunnel-health");
+    policy.allowMethod(HttpVerb.GET, "/shortfunnel-energy");
+    policy.allowMethod(HttpVerb.POST, "/shortfunnel-health");
+    policy.allowMethod(HttpVerb.POST, "/shortfunnel-energy");
     authResponse = policy.build();
     context = {
         "SomeKey": "SomeValue"
@@ -25,7 +25,7 @@ function lambda_handler(event, context) {
     console.log(authResponse);
     return authResponse;
 }
-var HttpVerb = {
+const HttpVerb = {
     "ALL": "*",
     "POST": "POST",
     "GET": "GET"
