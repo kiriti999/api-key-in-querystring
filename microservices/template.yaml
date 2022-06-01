@@ -1,7 +1,7 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: >
-  api-key-in-query-string-v2
+  api-key-in-query-string-v3
 Globals:
   Function:
     Timeout: 10
@@ -9,13 +9,13 @@ Globals:
     OpenApiVersion: 3.0.1
 
 Resources:
-  auth_function:
+  authFunction:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: auth_function/
       Handler: handler.lambda_handler
       Runtime: nodejs14.x
-  backend_function:
+  backendFunction:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: backend_function/
@@ -38,7 +38,7 @@ Resources:
             Method: post
 
   ShortFunnelApi:
-      DependsOn: auth_function
+      DependsOn: authFunction
       Type: AWS::Serverless::Api
       Properties:
         StageName: dev
@@ -50,7 +50,7 @@ Resources:
             Authorizers:
               LambdaRequestAuthorizer:
                 FunctionPayloadType: REQUEST
-                FunctionArn: !GetAtt auth_function.Arn
+                FunctionArn: !GetAtt authFunction.Arn
                 Identity:
                   ReauthorizeEvery: 300
                   QueryStrings:
@@ -93,7 +93,7 @@ Resources:
                   type: aws_proxy
                   httpMethod: POST
                   uri:
-                    Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${backend_function.Arn}/invocations
+                    Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${backendFunction.Arn}/invocations
                   responses:
                     default:
                       statusCode: "200"
@@ -128,7 +128,7 @@ Resources:
                   type: aws_proxy
                   httpMethod: POST
                   uri:
-                    Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${backend_function.Arn}/invocations
+                    Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${backendFunction.Arn}/invocations
                   responses:
                     default:
                       statusCode: "200"
@@ -204,7 +204,7 @@ Resources:
       StageKeys:
         - RestApiId: !Ref ShortFunnelApi
           StageName: dev
-      Value: !Join ["", [{"Ref": "AWS::StackName"}, "-unbounce-key"]]
+      Value: !Join ["", ["sam", "-unbounce-api-key"]]
 
   UsagePlan:
     DependsOn: ShortFunnelApidevStage
@@ -228,7 +228,7 @@ Resources:
 Outputs:
   ShortFunnelApiHealth:
     Description: "API Gateway endpoint URL for dev stage for api key validation in query string"
-    Value: !Sub "https://${ShortFunnelApi}.execute-api.${AWS::Region}.amazonaws.com/dev/shortfunnel-health?apiKey=${AWS::StackName}-unbounce-key"
+    Value: !Sub "https://${ShortFunnelApi}.execute-api.${AWS::Region}.amazonaws.com/dev/shortfunnel-health?apiKey=sam-unbounce-api-key"
   ShortFunnelApiEnergy:
     Description: "API Gateway endpoint URL for dev stage for api key validation in query string"
-    Value: !Sub "https://${ShortFunnelApi}.execute-api.${AWS::Region}.amazonaws.com/dev/shortfunnel-energy?apiKey=${AWS::StackName}-unbounce-key"
+    Value: !Sub "https://${ShortFunnelApi}.execute-api.${AWS::Region}.amazonaws.com/dev/shortfunnel-energy?apiKey=sam-unbounce-api-key"
