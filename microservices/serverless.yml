@@ -5,8 +5,8 @@ configValidationMode: error
 provider:
   name: aws
   region: ap-southeast-2
-  # runtime: nodejs14.x
-  runtime: python3.8
+  runtime: nodejs14.x
+  # runtime: python3.8
   timeout: 30
   apiGateway:
     apiKeys:
