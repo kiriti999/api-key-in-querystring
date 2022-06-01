@@ -11,11 +11,12 @@ exports.lambda_handler = async (event) => {
     } catch (error) {
         console.error('backend:: lambda_handler::', error);
     }
+
     return {
-        "statusCode": 200,
-        "body": {
+        statusCode: 200,
+        body: JSON.stringify({
             "message": "Hello from Lambda backend.",
             "yourIpAddress": ip
-        }
-    };
+        })
+    }
 };
