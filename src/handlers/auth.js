@@ -93,13 +93,14 @@ var AuthPolicy = /** @class */ (function () {
         return statement;
     };
     AuthPolicy.prototype._getStatementForEffect = function (effect, methods) {
-        console.log('AuthPolicy.prototype._getStatementForEffect:: methods: ', methods);
+        console.log(`AuthPolicy.prototype._getStatementForEffect:: effect: ${effect} methods: ${methods}`);
         var conditionalStatement, statement, statements;
         statements = [];
         try {
             if (methods.length > 0) {
                 statement = this._getEmptyStatement(effect);
-                for (var curMethod in methods) {
+                for (let index = 0; index < methods.length; index++) {
+                    let curMethod = methods[index];
                     if (curMethod["conditions"] === null || curMethod["conditions"].length === 0) {
                         statement["Resource"].push(curMethod["resourceArn"]);
                     }
