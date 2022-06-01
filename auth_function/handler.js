@@ -49,29 +49,31 @@ exports.lambda_handler = function (event, context, callback) {
 
 function AuthPolicy(principal, awsAccountId, apiOptions) {
 
-    this.awsAccountId = awsAccountId;
-    this.principalId = principal;
-    this.version = "2012-10-17";
-    this.pathRegex = new RegExp('^[/.a-zA-Z0-9-\*]+$');
-    this.allowMethods = [];
-    this.denyMethods = [];
+    let version = "2012-10-17";
+    let pathRegex = new RegExp('^[/.a-zA-Z0-9-\*]+$');
+    let allowMethods = [];
+    let denyMethods = [];
+    let restApiId;
+    let region;
+    let stage;
+
 
     if (!apiOptions || !apiOptions.restApiId) {
         // Beware of using '*' since it will not simply mean any API Gateway API id, because stars will greedily expand over '/' or other separators.
         // See https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_resource.html for more details.
-        this.restApiId = "<<restApiId>>";
+        restApiId = "<<restApiId>>";
     } else {
-        this.restApiId = apiOptions.restApiId;
+        restApiId = apiOptions.restApiId;
     }
     if (!apiOptions || !apiOptions.region) {
-        this.region = "<<region>>";
+        region = "<<region>>";
     } else {
-        this.region = apiOptions.region;
+        region = apiOptions.region;
     }
     if (!apiOptions || !apiOptions.stage) {
-        this.stage = "<<stage>>";
+        stage = "<<stage>>";
     } else {
-        this.stage = apiOptions.stage;
+        stage = apiOptions.stage;
     }
 };
 
