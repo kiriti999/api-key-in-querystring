@@ -74,7 +74,6 @@ var AuthPolicy = /** @class */ (function () {
                     });
                 }
             }
-            console.log('AuthPolicy.prototype._addMethod:: resourceArn: ', resourceArn);
         } catch (error) {
             console.log('_addMethod:: error:', error);
         }
@@ -112,12 +111,12 @@ var AuthPolicy = /** @class */ (function () {
                     }
                 }
                 statements.push(statement);
-                console.log("AuthPolicy.prototype._getStatementForEffect:: statements: ", statements);
             }
         } catch (error) {
             console.log("AuthPolicy.prototype._getStatementForEffect:: error: ", error);
         }
 
+        console.log("AuthPolicy.prototype._getStatementForEffect:: statements: ", statements);
         return statements;
     };
     AuthPolicy.prototype.allowAllMethods = function () {
@@ -154,8 +153,11 @@ var AuthPolicy = /** @class */ (function () {
             };
             console.log('AuthPolicy.prototype.build:: this.allowMethods: ', this.allowMethods);
 
-            policy["policyDocument"]["Statement"].concat(this._getStatementForEffect("Allow", this.allowMethods));
-            policy["policyDocument"]["Statement"].concat(this._getStatementForEffect("Deny", this.denyMethods));
+            const allowStatements = this._getStatementForEffect("Allow", this.allowMethods);
+            console.log('AuthPolicy.prototype.build:: allowStatements ', allowStatements);
+
+            policy["policyDocument"]["Statement"].push(...this._getStatementForEffect("Allow", this.allowMethods));
+            policy["policyDocument"]["Statement"].push(...this._getStatementForEffect("Deny", this.denyMethods));
         } catch (error) {
             console.log('AuthPolicy.prototype.build:: error: ', error);
         }
