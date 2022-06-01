@@ -35,7 +35,7 @@ const HttpVerb = {
 var AuthPolicy = /** @class */ (function () {
     function AuthPolicy(principal, awsAccountId) {
         this.version = "2012-10-17";
-        this.pathRegex = new RegExp('/[^/][a-zA-Z0-9]+/?[^/][a-zA-Z0-9-\*]+/');
+        this.pathRegex = new RegExp('^[/.a-zA-Z0-9-\*]+$');
         this.restApiId = "<<restApiId>>";
         this.region = "<<region>>";
         this.stage = "<<stage>>";
@@ -46,32 +46,37 @@ var AuthPolicy = /** @class */ (function () {
     }
     AuthPolicy.prototype._addMethod = function (effect, verb, resource, conditions) {
         var resourceArn, resourcePattern;
-        if (verb !== "*" && !(verb in HttpVerb)) {
-            console.log("Invalid verb ", verb);
-            throw new Error("Invalid HTTP verb " + verb + ". Allowed verbs in HttpVerb class");
-        }
-        if (!this.pathRegex.test(resourcePattern)) {
-            console.log("Invalid resource path ", resource);
-            throw new Error("Invalid resource path: " + resource + ". Path should match " + this.pathRegex);
-        }
-        if (resource.slice(0, 1) === "/") {
-            resource = resource.slice(1);
-        }
-        resourceArn = "arn:aws:execute-api:" + this.region + ":" + this.awsAccountId + ":" + this.restApiId + "/" + this.stage + "/" + verb + "/" + resource;
-        if (effect.lower() === "allow") {
-            this.allowMethods.append({
-                "resourceArn": resourceArn,
-                "conditions": conditions
-            });
-        }
-        else {
-            if (effect.lower() === "deny") {
-                this.denyMethods.append({
+        try {
+            if (verb !== "*" && !(verb in HttpVerb)) {
+                console.log("Invalid verb ", verb);
+                throw new Error("Invalid HTTP verb " + verb + ". Allowed verbs in HttpVerb class");
+            }
+            if (!this.pathRegex.test(resourcePattern)) {
+                console.log("Invalid resource path ", resource);
+                throw new Error("Invalid resource path: " + resource + ". Path should match " + this.pathRegex);
+            }
+            if (resource.slice(0, 1) === "/") {
+                resource = resource.slice(1);
+            }
+            resourceArn = "arn:aws:execute-api:" + this.region + ":" + this.awsAccountId + ":" + this.restApiId + "/" + this.stage + "/" + verb + "/" + resource;
+            if (effect.lower() === "allow") {
+                this.allowMethods.append({
                     "resourceArn": resourceArn,
                     "conditions": conditions
                 });
             }
+            else {
+                if (effect.lower() === "deny") {
+                    this.denyMethods.append({
+                        "resourceArn": resourceArn,
+                        "conditions": conditions
+                    });
+                }
+            }
+        } catch (error) {
+            console.log('_addMethod:: error:', error);
         }
+
     };
     AuthPolicy.prototype._getEmptyStatement = function (effect) {
         var statement = {
