@@ -9,13 +9,13 @@ Globals:
     OpenApiVersion: 3.0.1
 
 Resources:
-  AuthFunction:
+  auth_function:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: auth_function/
       Handler: handler.lambda_handler
       Runtime: nodejs14.x
-  BackendFunction:
+  backend_function:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: backend_function/
@@ -38,7 +38,7 @@ Resources:
             Method: post
 
   ShortFunnelApi:
-      DependsOn: AuthFunction
+      DependsOn: auth_function
       Type: AWS::Serverless::Api
       Properties:
         StageName: dev
@@ -50,7 +50,7 @@ Resources:
             Authorizers:
               LambdaRequestAuthorizer:
                 FunctionPayloadType: REQUEST
-                FunctionArn: !GetAtt AuthFunction.Arn
+                FunctionArn: !GetAtt auth_function.Arn
                 Identity:
                   ReauthorizeEvery: 300
                   QueryStrings:
@@ -93,7 +93,7 @@ Resources:
                   type: aws_proxy
                   httpMethod: POST
                   uri:
-                    Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${BackendFunction.Arn}/invocations
+                    Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${backend_function.Arn}/invocations
                   responses:
                     default:
                       statusCode: "200"
@@ -128,7 +128,7 @@ Resources:
                   type: aws_proxy
                   httpMethod: POST
                   uri:
-                    Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${BackendFunction.Arn}/invocations
+                    Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${backend_function.Arn}/invocations
                   responses:
                     default:
                       statusCode: "200"
