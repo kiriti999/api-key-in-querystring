@@ -1,4 +1,5 @@
-function lambda_handler(event, context) {
+
+exports.lambda_handler = async (event) => {
     let apiGatewayArnTmp, apiKey, authResponse, awsAccountId, policy, principalId, tmp, usageIdentifierKey;
     console.log("event ", event);
     apiKey = event["queryStringParameters"]["apiKey"];
@@ -24,7 +25,8 @@ function lambda_handler(event, context) {
     authResponse["usageIdentifierKey"] = usageIdentifierKey;
     console.log(authResponse);
     return authResponse;
-}
+};
+
 const HttpVerb = {
     "ALL": "*",
     "POST": "POST",
@@ -137,5 +139,3 @@ var AuthPolicy = /** @class */ (function () {
     };
     return AuthPolicy;
 }());
-
-module.exports = lambda_handler;
