@@ -4,12 +4,12 @@ var http = require('http');
 exports.lambda_handler = async (event) => {
     console.log('backend:: lambda_handler:: event: ', event);
     let ip;
-    let result = {};
+    let res = {};
     try {
         const result = await axios.get('http://checkip.amazonaws.com/');
         ip = result.data;
         console.log('backend:: lambda_handler:: ip data', ip);
-        result = {
+        res = {
             statusCode: 200,
             body: JSON.stringify({
                 "message": "Hello from Lambda backend.",
@@ -18,7 +18,7 @@ exports.lambda_handler = async (event) => {
         }
     } catch (error) {
         console.error('backend:: lambda_handler::', error);
-        result = {
+        res = {
             statusCode: 400,
             body: JSON.stringify({
                 "message": `backend:: lambda_handler:: ${error}`
@@ -26,5 +26,5 @@ exports.lambda_handler = async (event) => {
         }
     }
 
-    return result;
+    return res;
 };
