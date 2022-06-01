@@ -9,4 +9,12 @@ confirm_changeset = false
 disable_rollback = false
 capabilities = "CAPABILITY_IAM"
 image_repositories = []
-s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-cv543fgr2rsi"
+
+[dev]
+[dev.deploy]
+[dev.deploy.parameters]
+stack_name = "api-key-in-query-string-v3"
+s3_prefix = "api-key-in-query-string-v3"
+region = "ap-southeast-2"
+capabilities = "CAPABILITY_IAM"
+image_repositories = []
