@@ -4,23 +4,52 @@ Description: >
   api-key-in-query-string-v3
 Globals:
   Function:
+    CodeUri: ./
     Timeout: 10
+    Runtime: nodejs14.x
+    Environment:
+      Variables:
+        NODE_ENV: "production"
+        AWS_REGION: "ap-southeast-1"
+        AWS_API_VERSION: "2012-11-05"
   Api:
     OpenApiVersion: 3.0.1
+    Cors:
+      AllowOrigin: "'*'"
+      AllowMethods: "'GET, POST'"
+  Parameters:
+    Environment:
+      Type: String
+      Default: qa
+      AllowedValues:
+        - dev
+        - uat
+      Description: Enter dev, qa, or prod. Default is dev.
+    AccountId:
+      Type: Number
+      Default: 553856789961
+    Region:
+      Type: String
+      Default: ap-southeast-2
+    Location:
+      Type: String
+      Default: apse2
+    AppName:
+      Type: String
+      Default: "ShortFunnelV2"
+    LogRetention:
+      Type: Number
+      Default: 1
 
 Resources:
   authFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: .
       Handler: auth.lambda_handler
-      Runtime: nodejs14.x
   backendFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: ./
       Handler: backend.lambda_handler
-      Runtime: nodejs14.x
       Events:
         health:
           Type: Api
