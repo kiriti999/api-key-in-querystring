@@ -9,14 +9,4 @@ confirm_changeset = false
 disable_rollback = false
 capabilities = "CAPABILITY_IAM"
 image_repositories = []
-s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-1bhzd5es6mu4q"
-
-[dev]
-[dev.deploy]
-[dev.deploy.parameters]
-stack_name = "ShortFunnelV2"
-s3_prefix = "ShortFunnelV2"
-region = "ap-southeast-2"
-capabilities = "CAPABILITY_IAM"
-image_repositories = []
-parameter_overrides = "Environment=\"uat\" AccountId=\"553856789961\" Region=\"ap-southeast-2\" Location=\"apse2\" AppName=\"ShortFunnelV2\" LogRetention=\"1\""
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-8dup1qoqi6c7"

@@ -167,7 +167,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/api-key-in-query-string-sls/dev/1654601565500-2022-06-07T11:32:45.500Z/api-key-in-query-string-sls.zip"
+          "S3Key": "serverless/api-key-in-query-string-sls/dev/1654604529402-2022-06-07T12:22:09.402Z/api-key-in-query-string-sls.zip"
         },
         "Handler": "./auth.lambda_handler",
         "Runtime": "nodejs14.x",
@@ -193,7 +193,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/api-key-in-query-string-sls/dev/1654601565500-2022-06-07T11:32:45.500Z/api-key-in-query-string-sls.zip"
+          "S3Key": "serverless/api-key-in-query-string-sls/dev/1654604529402-2022-06-07T12:22:09.402Z/api-key-in-query-string-sls.zip"
         },
         "Handler": "./backend.lambda_handler",
         "Runtime": "nodejs14.x",
@@ -211,25 +211,25 @@
         "BackendFunctionLogGroup"
       ]
     },
-    "MyAuthFunctionLambdaVersionU9qpMzVSXNN1LPzO4ZrYbYwsGnOsLiKhuZ3OFwcGY": {
+    "MyAuthFunctionLambdaVersionJbmq1nrlfShADnMvkeSmnWcnZsXYcXr8ymyfUREkH0": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "MyAuthFunctionLambdaFunction"
         },
-        "CodeSha256": "epj6XJNu/1G5EIhR1kb6G9e6Y4f19/sNNsDnnJzRb1c=",
+        "CodeSha256": "iBS8eu3nhg9CbZ9XIBnxf/DK+fyhB9k8XgXjyETqP5o=",
         "Description": "Extracts api key, authenticates against usage plan, allow/deny http methods and returns auth response object"
       }
     },
-    "BackendFunctionLambdaVersionvRwNkaplzyyOsBHyqE2hSbCE987m8uni5vSJghPnUx4": {
+    "BackendFunctionLambdaVersionly1l5oKY1mqhIrzxFQJUaJhePpWOT5tjbB0bct4X58": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "BackendFunctionLambdaFunction"
         },
-        "CodeSha256": "epj6XJNu/1G5EIhR1kb6G9e6Y4f19/sNNsDnnJzRb1c="
+        "CodeSha256": "iBS8eu3nhg9CbZ9XIBnxf/DK+fyhB9k8XgXjyETqP5o="
       }
     },
     "ApiGatewayRestApi": {
@@ -353,7 +353,7 @@
         "BackendFunctionLambdaPermissionApiGateway"
       ]
     },
-    "ApiGatewayDeployment1654601554362": {
+    "ApiGatewayDeployment1654604518956": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -381,11 +381,11 @@
           }
         ]
       },
-      "DependsOn": "ApiGatewayDeployment1654601554362"
+      "DependsOn": "ApiGatewayDeployment1654604518956"
     },
     "ApiGatewayUsagePlan": {
       "Type": "AWS::ApiGateway::UsagePlan",
-      "DependsOn": "ApiGatewayDeployment1654601554362",
+      "DependsOn": "ApiGatewayDeployment1654604518956",
       "Properties": {
         "ApiStages": [
           {
@@ -503,7 +503,7 @@
     "MyAuthFunctionLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "MyAuthFunctionLambdaVersionU9qpMzVSXNN1LPzO4ZrYbYwsGnOsLiKhuZ3OFwcGY"
+        "Ref": "MyAuthFunctionLambdaVersionJbmq1nrlfShADnMvkeSmnWcnZsXYcXr8ymyfUREkH0"
       },
       "Export": {
         "Name": "sls-api-key-in-query-string-sls-dev-MyAuthFunctionLambdaFunctionQualifiedArn"
@@ -512,7 +512,7 @@
     "BackendFunctionLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "BackendFunctionLambdaVersionvRwNkaplzyyOsBHyqE2hSbCE987m8uni5vSJghPnUx4"
+        "Ref": "BackendFunctionLambdaVersionly1l5oKY1mqhIrzxFQJUaJhePpWOT5tjbB0bct4X58"
       },
       "Export": {
         "Name": "sls-api-key-in-query-string-sls-dev-BackendFunctionLambdaFunctionQualifiedArn"

@@ -31,13 +31,6 @@ Resources:
               Ref: myApi
             Path: /shortfunnel-health
             Method: post
-        energy:
-          Type: Api
-          Properties:
-            RestApiId:
-              Ref: myApi
-            Path: /shortfunnel-energy
-            Method: post
 
   myApi:
       DependsOn: MyAuthFunction
