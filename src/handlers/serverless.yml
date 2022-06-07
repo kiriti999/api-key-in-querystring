@@ -32,7 +32,6 @@ functions:
       - http:
           method: post
           cors: true
-          private: true
           path: /shortfunnel-health
           authorizer:
             name: MyAuthFunction

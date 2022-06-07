@@ -11,11 +11,7 @@ exports.lambda_handler = async (event) => {
     policy.restApiId = apiGatewayArnTmp[0];
     policy.region = tmp[3];
     policy.stage = apiGatewayArnTmp[1];
-    policy.allowMethod(HttpVerb.GET, "/auth");
-    policy.allowMethod(HttpVerb.GET, "/shortfunnel-health");
-    policy.allowMethod(HttpVerb.GET, "/shortfunnel-energy");
     policy.allowMethod(HttpVerb.POST, "/shortfunnel-health");
-    policy.allowMethod(HttpVerb.POST, "/shortfunnel-energy");
     authResponse = policy.build();
     context = {
         "SomeKey": "SomeValue"
