@@ -1,52 +1,25 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: >
-  api-key-in-query-string-v3
+  api-key-in-query-string-sam
 Globals:
   Function:
     CodeUri: ./
     Timeout: 10
     Runtime: nodejs14.x
-    Environment:
-      Variables:
-        NODE_ENV: "production"
-        AWS_REGION: "ap-southeast-1"
-        AWS_API_VERSION: "2012-11-05"
+
   Api:
     OpenApiVersion: 3.0.1
     Cors:
       AllowOrigin: "'*'"
       AllowMethods: "'GET, POST'"
-  Parameters:
-    Environment:
-      Type: String
-      Default: qa
-      AllowedValues:
-        - dev
-        - uat
-      Description: Enter dev, qa, or prod. Default is dev.
-    AccountId:
-      Type: Number
-      Default: 553856789961
-    Region:
-      Type: String
-      Default: ap-southeast-2
-    Location:
-      Type: String
-      Default: apse2
-    AppName:
-      Type: String
-      Default: "ShortFunnelV2"
-    LogRetention:
-      Type: Number
-      Default: 1
 
 Resources:
-  authFunction:
+  MyMyAuthFunction:
     Type: AWS::Serverless::Function
     Properties:
       Handler: auth.lambda_handler
-  backendFunction:
+  BackendFunction:
     Type: AWS::Serverless::Function
     Properties:
       Handler: backend.lambda_handler
@@ -55,19 +28,19 @@ Resources:
           Type: Api
           Properties:
             RestApiId:
-              Ref: shortFunnelApi
+              Ref: myApi
             Path: /shortfunnel-health
             Method: post
         energy:
           Type: Api
           Properties:
             RestApiId:
-              Ref: shortFunnelApi
+              Ref: myApi
             Path: /shortfunnel-energy
             Method: post
 
-  shortFunnelApi:
-      DependsOn: authFunction
+  myApi:
+      DependsOn: MyAuthFunction
       Type: AWS::Serverless::Api
       Properties:
         StageName: dev
@@ -79,168 +52,29 @@ Resources:
             Authorizers:
               LambdaRequestAuthorizer:
                 FunctionPayloadType: REQUEST
-                FunctionArn: !GetAtt authFunction.Arn
+                FunctionArn: !GetAtt MyAuthFunction.Arn
                 Identity:
                   ReauthorizeEvery: 300
                   QueryStrings:
                     - apiKey
-        DefinitionBody:
-          openapi: "3.0"
-          info:
-            version: "2021-08-10T13:18:57Z"
-            title: "shortFunnel"
-          basePath: "/dev"
-          x-amazon-apigateway-api-key-source: "AUTHORIZER" #important
-          schemes:
-          - "https"
-          paths:
-            /shortfunnel-health:
-              post:
-                produces:
-                  - application/json
-                parameters:
-                  - in: query
-                    name: apiKey
-                    schema:
-                      type: string
-                    required: true
-                requestBody:
-                  content:
-                    application/json:
-                      schema:
-                        $ref: "#/components/schemas/shortFunnelHealthEnergy"
-                responses:
-                  "200":
-                    description: 200 response
-                    schema:
-                      $ref: "#/components/schemas/responses/200"
-                  "400":
-                    description: 400 response
-                    schema:
-                      $ref: "#/components/schemas/responses/400"
-                x-amazon-apigateway-integration:
-                  type: aws_proxy
-                  httpMethod: POST
-                  uri:
-                    Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${backendFunction.Arn}/invocations
-                  responses:
-                    default:
-                      statusCode: "200"
-                  passthroughBehavior: when_no_match
-                  contentHandling: CONVERT_TO_TEXT
-
-            /shortfunnel-energy:
-              post:
-                produces:
-                  - application/json
-                parameters:
-                  - in: query
-                    name: apiKey
-                    schema:
-                      type: string
-                    required: true
-                requestBody:
-                  content:
-                    application/json:
-                      schema:
-                        $ref: "#/components/schemas/shortFunnelHealthEnergy"
-                responses:
-                  "200":
-                    description: 200 response
-                    schema:
-                      $ref: "#/components/schemas/responses/200"
-                  "400":
-                    description: 400 response
-                    schema:
-                      $ref: "#/components/schemas/responses/400"
-                x-amazon-apigateway-integration:
-                  type: aws_proxy
-                  httpMethod: POST
-                  uri:
-                    Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${backendFunction.Arn}/invocations
-                  responses:
-                    default:
-                      statusCode: "200"
-                  passthroughBehavior: when_no_match
-                  contentHandling: CONVERT_TO_TEXT
-
-          components:
-            schemas:
-              definitions:
-                Empty:
-                  type: "object"
-                  title: "Empty Schema"
-              shortFunnelHealthEnergy:
-                type: object
-                additionalProperties: false
-                required:
-                  - firstName
-                  - lastName
-                  - email
-                  - postCode
-                  - mobileNumber
-                properties:
-                  firstName:
-                    type: string
-                  lastName:
-                    type: string
-                  email:
-                    type: string
-                  mobileNumber:
-                    type: string
-                  postCode:
-                    type: string
-              responses:
-                "200":
-                  description: success
-                  content:
-                    application/json:
-                      schema:
-                        type: object
-                        properties:
-                          status:
-                            type: string
-                            example: "200"
-                          title:
-                            type: string
-                            example: Success
-                          detail:
-                            type: string
-                            example: Able to access resource
-                "400":
-                  description: success
-                  content:
-                    application/json:
-                      schema:
-                        type: object
-                        properties:
-                          status:
-                            type: string
-                            example: "400"
-                          title:
-                            type: string
-                            example: Bad request
-                          detail:
-                            type: string
-                            example: Invalid request
 
   ApiKey:
     Type: AWS::ApiGateway::ApiKey
-    DependsOn: shortFunnelApidevStage
+    DependsOn: myApidevStage
     Properties:
-      Name: !Join ["", [{"Ref": "AWS::StackName"}, "-apikey"]]
+      Name: !Join ["", ["dev", "-unbounce-sam-api-key"]]
       Enabled: true
       StageKeys:
-        - RestApiId: !Ref shortFunnelApi
+        - RestApiId: !Ref myApi
           StageName: dev
-      Value: !Join ["", ["sam", "-unbounce-api-key"]]
+      Value: !Join ["", ["dev", "-unbounce-sam-api-key"]]
 
   UsagePlan:
-    DependsOn: shortFunnelApidevStage
+    DependsOn: myApidevStage
     Type: AWS::ApiGateway::UsagePlan
     Properties:
       ApiStages:
-        - ApiId: !Ref shortFunnelApi
+        - ApiId: !Ref myApi
           Stage: dev
       Throttle:
         BurstLimit: 50
@@ -255,9 +89,6 @@ Resources:
       UsagePlanId: !Ref UsagePlan
 
 Outputs:
-  shortFunnelApiHealth:
+  myApiHealth:
     Description: "API Gateway endpoint URL for dev stage for api key validation in query string"
-    Value: !Sub "https://${shortFunnelApi}.execute-api.${AWS::Region}.amazonaws.com/dev/shortfunnel-health?apiKey=sam-unbounce-api-key"
-  shortFunnelApiEnergy:
-    Description: "API Gateway endpoint URL for dev stage for api key validation in query string"
-    Value: !Sub "https://${shortFunnelApi}.execute-api.${AWS::Region}.amazonaws.com/dev/shortfunnel-energy?apiKey=sam-unbounce-api-key"
+    Value: !Sub "https://${myApi}.execute-api.${AWS::Region}.amazonaws.com/dev/shortfunnel-health?apiKey=sam-unbounce-api-key"

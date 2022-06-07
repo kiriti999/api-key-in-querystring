@@ -1,4 +1,4 @@
-service: api-key-in-query-string-sam1
+service: api-key-in-query-string-sls
 frameworkVersion: '3'
 configValidationMode: error
 
@@ -9,7 +9,7 @@ provider:
   timeout: 30
   apiGateway:
     apiKeys:
-      - value: ${opt:stage}-unbounce-api-key
+      - value: ${opt:stage}-unbounce-sls-api-key
         description: Api key description # Optional
     usagePlan:
       quota:
@@ -57,8 +57,7 @@ resources:
               "arn:aws:apigateway:",
               "ap-southeast-2",
               ":lambda:path/",
-              "2015-03-31/functions/",
-              "",
+              "2015-03-31/functions/", "arn:aws:lambda:ap-southeast-2:327303463717:function:lambda_request_authorizer2",
               "/invocations"
             ]]
 
@@ -66,7 +65,7 @@ resources:
       Type: "AWS::Lambda::Permission"
       Properties:
         Action: lambda:InvokeFunction
-        FunctionName: ""
+        FunctionName: "arn:aws:lambda:ap-southeast-2:327303463717:function:lambda_request_authorizer2"
         Principal: "apigateway.amazonaws.com"
 
   Outputs:

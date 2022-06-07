@@ -1,8 +1,8 @@
 {
   "service": {
-    "service": "api-key-in-query-string-sam1",
+    "service": "api-key-in-query-string-sam",
     "serviceObject": {
-      "name": "api-key-in-query-string-sam1"
+      "name": "api-key-in-query-string-sam"
     },
     "provider": {
       "name": "aws",
@@ -103,16 +103,16 @@
               }
             }
           },
-          "AuthorizerLogGroup": {
+          "MyAuthFunctionLogGroup": {
             "Type": "AWS::Logs::LogGroup",
             "Properties": {
-              "LogGroupName": "/aws/lambda/api-key-in-query-string-sam1-dev-authorizer"
+              "LogGroupName": "/aws/lambda/api-key-in-query-string-sam-dev-MyAuthFunction"
             }
           },
           "BackendFunctionLogGroup": {
             "Type": "AWS::Logs::LogGroup",
             "Properties": {
-              "LogGroupName": "/aws/lambda/api-key-in-query-string-sam1-dev-backendFunction"
+              "LogGroupName": "/aws/lambda/api-key-in-query-string-sam-dev-BackendFunction"
             }
           },
           "IamRoleLambdaExecution": {
@@ -140,7 +140,7 @@
                     "Fn::Join": [
                       "-",
                       [
-                        "api-key-in-query-string-sam1",
+                        "api-key-in-query-string-sam",
                         "dev",
                         "lambda"
                       ]
@@ -157,7 +157,7 @@
                         ],
                         "Resource": [
                           {
-                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/api-key-in-query-string-sam1-dev*:*"
+                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/api-key-in-query-string-sam-dev*:*"
                           }
                         ]
                       },
@@ -168,7 +168,7 @@
                         ],
                         "Resource": [
                           {
-                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/api-key-in-query-string-sam1-dev*:*:*"
+                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/api-key-in-query-string-sam-dev*:*:*"
                           }
                         ]
                       }
@@ -181,7 +181,7 @@
                 "Fn::Join": [
                   "-",
                   [
-                    "api-key-in-query-string-sam1",
+                    "api-key-in-query-string-sam",
                     "dev",
                     {
                       "Ref": "AWS::Region"
@@ -192,18 +192,18 @@
               }
             }
           },
-          "AuthorizerLambdaFunction": {
+          "MyAuthFunctionLambdaFunction": {
             "Type": "AWS::Lambda::Function",
             "Properties": {
               "Code": {
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/api-key-in-query-string-sam1/dev/1654113186848-2022-06-01T19:53:06.848Z/api-key-in-query-string-sam1.zip"
+                "S3Key": "serverless/api-key-in-query-string-sam/dev/1654600797740-2022-06-07T11:19:57.740Z/api-key-in-query-string-sam.zip"
               },
               "Handler": "./auth.lambda_handler",
               "Runtime": "nodejs14.x",
-              "FunctionName": "api-key-in-query-string-sam1-dev-authorizer",
+              "FunctionName": "api-key-in-query-string-sam-dev-MyAuthFunction",
               "MemorySize": 1024,
               "Timeout": 30,
               "Description": "Extracts api key, authenticates against usage plan, allow/deny http methods and returns auth response object",
@@ -215,7 +215,7 @@
               }
             },
             "DependsOn": [
-              "AuthorizerLogGroup"
+              "MyAuthFunctionLogGroup"
             ]
           },
           "BackendFunctionLambdaFunction": {
@@ -225,11 +225,11 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/api-key-in-query-string-sam1/dev/1654113186848-2022-06-01T19:53:06.848Z/api-key-in-query-string-sam1.zip"
+                "S3Key": "serverless/api-key-in-query-string-sam/dev/1654600797740-2022-06-07T11:19:57.740Z/api-key-in-query-string-sam.zip"
               },
               "Handler": "./backend.lambda_handler",
               "Runtime": "nodejs14.x",
-              "FunctionName": "api-key-in-query-string-sam1-dev-backendFunction",
+              "FunctionName": "api-key-in-query-string-sam-dev-BackendFunction",
               "MemorySize": 1024,
               "Timeout": 30,
               "Role": {
@@ -243,52 +243,37 @@
               "BackendFunctionLogGroup"
             ]
           },
-          "AuthorizerLambdaVersiontfBX5GOihIcfg5g5kFJhExXuwDebK5JQjUvjXhAZtZs": {
+          "MyAuthFunctionLambdaVersionDP5ryObA6fH0LILQ96fQOl0WAKNfEQJx1gfEfZR0gQg": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
-                "Ref": "AuthorizerLambdaFunction"
+                "Ref": "MyAuthFunctionLambdaFunction"
               },
-              "CodeSha256": "OYZK3+ifW49RAXb48tnUAeIPamP11UyNwH9/yMzissM=",
+              "CodeSha256": "heCqW/0/6XYPA3PnV9xqzW1wMAjINRO4FV6sQXvpkUE=",
               "Description": "Extracts api key, authenticates against usage plan, allow/deny http methods and returns auth response object"
             }
           },
-          "BackendFunctionLambdaVersion5MNKE5ZrLvBKzwnecmfxORYphw6fx8GAbz3yKNVatk": {
+          "BackendFunctionLambdaVersionqi2rMZRavIb2w3bEj5t6db5gLjc247FyujvaXoR2GaE": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "BackendFunctionLambdaFunction"
               },
-              "CodeSha256": "OYZK3+ifW49RAXb48tnUAeIPamP11UyNwH9/yMzissM="
+              "CodeSha256": "heCqW/0/6XYPA3PnV9xqzW1wMAjINRO4FV6sQXvpkUE="
             }
           },
           "ApiGatewayRestApi": {
             "Type": "AWS::ApiGateway::RestApi",
             "Properties": {
-              "Name": "dev-api-key-in-query-string-sam1",
+              "Name": "dev-api-key-in-query-string-sam",
               "EndpointConfiguration": {
                 "Types": [
                   "EDGE"
                 ]
               },
               "Policy": ""
-            }
-          },
-          "ApiGatewayResourceAuth": {
-            "Type": "AWS::ApiGateway::Resource",
-            "Properties": {
-              "ParentId": {
-                "Fn::GetAtt": [
-                  "ApiGatewayRestApi",
-                  "RootResourceId"
-                ]
-              },
-              "PathPart": "auth",
-              "RestApiId": {
-                "Ref": "ApiGatewayRestApi"
-              }
             }
           },
           "ApiGatewayResourceShortfunnelDashhealth": {
@@ -301,66 +286,6 @@
                 ]
               },
               "PathPart": "shortfunnel-health",
-              "RestApiId": {
-                "Ref": "ApiGatewayRestApi"
-              }
-            }
-          },
-          "ApiGatewayResourceShortfunnelDashenergy": {
-            "Type": "AWS::ApiGateway::Resource",
-            "Properties": {
-              "ParentId": {
-                "Fn::GetAtt": [
-                  "ApiGatewayRestApi",
-                  "RootResourceId"
-                ]
-              },
-              "PathPart": "shortfunnel-energy",
-              "RestApiId": {
-                "Ref": "ApiGatewayRestApi"
-              }
-            }
-          },
-          "ApiGatewayMethodAuthOptions": {
-            "Type": "AWS::ApiGateway::Method",
-            "Properties": {
-              "AuthorizationType": "NONE",
-              "HttpMethod": "OPTIONS",
-              "MethodResponses": [
-                {
-                  "StatusCode": "200",
-                  "ResponseParameters": {
-                    "method.response.header.Access-Control-Allow-Origin": true,
-                    "method.response.header.Access-Control-Allow-Headers": true,
-                    "method.response.header.Access-Control-Allow-Methods": true
-                  },
-                  "ResponseModels": {}
-                }
-              ],
-              "RequestParameters": {},
-              "Integration": {
-                "Type": "MOCK",
-                "RequestTemplates": {
-                  "application/json": "{statusCode:200}"
-                },
-                "ContentHandling": "CONVERT_TO_TEXT",
-                "IntegrationResponses": [
-                  {
-                    "StatusCode": "200",
-                    "ResponseParameters": {
-                      "method.response.header.Access-Control-Allow-Origin": "'*'",
-                      "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
-                      "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET'"
-                    },
-                    "ResponseTemplates": {
-                      "application/json": ""
-                    }
-                  }
-                ]
-              },
-              "ResourceId": {
-                "Ref": "ApiGatewayResourceAuth"
-              },
               "RestApiId": {
                 "Ref": "ApiGatewayRestApi"
               }
@@ -411,98 +336,6 @@
               }
             }
           },
-          "ApiGatewayMethodShortfunnelDashenergyOptions": {
-            "Type": "AWS::ApiGateway::Method",
-            "Properties": {
-              "AuthorizationType": "NONE",
-              "HttpMethod": "OPTIONS",
-              "MethodResponses": [
-                {
-                  "StatusCode": "200",
-                  "ResponseParameters": {
-                    "method.response.header.Access-Control-Allow-Origin": true,
-                    "method.response.header.Access-Control-Allow-Headers": true,
-                    "method.response.header.Access-Control-Allow-Methods": true
-                  },
-                  "ResponseModels": {}
-                }
-              ],
-              "RequestParameters": {},
-              "Integration": {
-                "Type": "MOCK",
-                "RequestTemplates": {
-                  "application/json": "{statusCode:200}"
-                },
-                "ContentHandling": "CONVERT_TO_TEXT",
-                "IntegrationResponses": [
-                  {
-                    "StatusCode": "200",
-                    "ResponseParameters": {
-                      "method.response.header.Access-Control-Allow-Origin": "'*'",
-                      "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
-                      "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,POST'"
-                    },
-                    "ResponseTemplates": {
-                      "application/json": ""
-                    }
-                  }
-                ]
-              },
-              "ResourceId": {
-                "Ref": "ApiGatewayResourceShortfunnelDashenergy"
-              },
-              "RestApiId": {
-                "Ref": "ApiGatewayRestApi"
-              }
-            }
-          },
-          "ApiGatewayMethodAuthGet": {
-            "Type": "AWS::ApiGateway::Method",
-            "Properties": {
-              "HttpMethod": "GET",
-              "RequestParameters": {},
-              "ResourceId": {
-                "Ref": "ApiGatewayResourceAuth"
-              },
-              "RestApiId": {
-                "Ref": "ApiGatewayRestApi"
-              },
-              "ApiKeyRequired": false,
-              "AuthorizationType": "CUSTOM",
-              "AuthorizerId": {
-                "Ref": "AuthorizerApiGatewayAuthorizer"
-              },
-              "Integration": {
-                "IntegrationHttpMethod": "POST",
-                "Type": "AWS_PROXY",
-                "Uri": {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:",
-                      {
-                        "Ref": "AWS::Partition"
-                      },
-                      ":apigateway:",
-                      {
-                        "Ref": "AWS::Region"
-                      },
-                      ":lambda:path/2015-03-31/functions/",
-                      {
-                        "Fn::GetAtt": [
-                          "BackendFunctionLambdaFunction",
-                          "Arn"
-                        ]
-                      },
-                      "/invocations"
-                    ]
-                  ]
-                }
-              },
-              "MethodResponses": []
-            },
-            "DependsOn": "AuthorizerApiGatewayAuthorizer"
-          },
           "ApiGatewayMethodShortfunnelDashhealthPost": {
             "Type": "AWS::ApiGateway::Method",
             "Properties": {
@@ -514,10 +347,10 @@
               "RestApiId": {
                 "Ref": "ApiGatewayRestApi"
               },
-              "ApiKeyRequired": false,
+              "ApiKeyRequired": true,
               "AuthorizationType": "CUSTOM",
               "AuthorizerId": {
-                "Ref": "AuthorizerApiGatewayAuthorizer"
+                "Ref": "ApiGatewayAuthorizer"
               },
               "Integration": {
                 "IntegrationHttpMethod": "POST",
@@ -548,91 +381,11 @@
               },
               "MethodResponses": []
             },
-            "DependsOn": "AuthorizerApiGatewayAuthorizer"
+            "DependsOn": [
+              "BackendFunctionLambdaPermissionApiGateway"
+            ]
           },
-          "ApiGatewayMethodShortfunnelDashenergyPost": {
-            "Type": "AWS::ApiGateway::Method",
-            "Properties": {
-              "HttpMethod": "POST",
-              "RequestParameters": {},
-              "ResourceId": {
-                "Ref": "ApiGatewayResourceShortfunnelDashenergy"
-              },
-              "RestApiId": {
-                "Ref": "ApiGatewayRestApi"
-              },
-              "ApiKeyRequired": false,
-              "AuthorizationType": "CUSTOM",
-              "AuthorizerId": {
-                "Ref": "AuthorizerApiGatewayAuthorizer"
-              },
-              "Integration": {
-                "IntegrationHttpMethod": "POST",
-                "Type": "AWS_PROXY",
-                "Uri": {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:",
-                      {
-                        "Ref": "AWS::Partition"
-                      },
-                      ":apigateway:",
-                      {
-                        "Ref": "AWS::Region"
-                      },
-                      ":lambda:path/2015-03-31/functions/",
-                      {
-                        "Fn::GetAtt": [
-                          "BackendFunctionLambdaFunction",
-                          "Arn"
-                        ]
-                      },
-                      "/invocations"
-                    ]
-                  ]
-                }
-              },
-              "MethodResponses": []
-            },
-            "DependsOn": "AuthorizerApiGatewayAuthorizer"
-          },
-          "AuthorizerApiGatewayAuthorizer": {
-            "Type": "AWS::ApiGateway::Authorizer",
-            "Properties": {
-              "AuthorizerResultTtlInSeconds": 300,
-              "IdentitySource": "method.request.header.Authorization",
-              "Name": "authorizer",
-              "RestApiId": {
-                "Ref": "ApiGatewayRestApi"
-              },
-              "AuthorizerUri": {
-                "Fn::Join": [
-                  "",
-                  [
-                    "arn:",
-                    {
-                      "Ref": "AWS::Partition"
-                    },
-                    ":apigateway:",
-                    {
-                      "Ref": "AWS::Region"
-                    },
-                    ":lambda:path/2015-03-31/functions/",
-                    {
-                      "Fn::GetAtt": [
-                        "AuthorizerLambdaFunction",
-                        "Arn"
-                      ]
-                    },
-                    "/invocations"
-                  ]
-                ]
-              },
-              "Type": "REQUEST"
-            }
-          },
-          "ApiGatewayDeployment1654113181691": {
+          "ApiGatewayDeployment1654600786218": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
@@ -641,12 +394,8 @@
               "StageName": "dev"
             },
             "DependsOn": [
-              "ApiGatewayMethodAuthOptions",
               "ApiGatewayMethodShortfunnelDashhealthOptions",
-              "ApiGatewayMethodShortfunnelDashenergyOptions",
-              "ApiGatewayMethodAuthGet",
-              "ApiGatewayMethodShortfunnelDashhealthPost",
-              "ApiGatewayMethodShortfunnelDashenergyPost"
+              "ApiGatewayMethodShortfunnelDashhealthPost"
             ]
           },
           "ApiGatewayApiKey1": {
@@ -664,11 +413,11 @@
                 }
               ]
             },
-            "DependsOn": "ApiGatewayDeployment1654113181691"
+            "DependsOn": "ApiGatewayDeployment1654600786218"
           },
           "ApiGatewayUsagePlan": {
             "Type": "AWS::ApiGateway::UsagePlan",
-            "DependsOn": "ApiGatewayDeployment1654113181691",
+            "DependsOn": "ApiGatewayDeployment1654600786218",
             "Properties": {
               "ApiStages": [
                 {
@@ -678,8 +427,8 @@
                   "Stage": "dev"
                 }
               ],
-              "Description": "Usage plan for api-key-in-query-string-sam1 dev stage",
-              "UsagePlanName": "api-key-in-query-string-sam1-dev",
+              "Description": "Usage plan for api-key-in-query-string-sam dev stage",
+              "UsagePlanName": "api-key-in-query-string-sam-dev",
               "Quota": {
                 "Limit": 5000,
                 "Offset": 2,
@@ -740,41 +489,37 @@
               }
             }
           },
-          "AuthorizerLambdaPermissionApiGateway": {
-            "Type": "AWS::Lambda::Permission",
+          "ApiGatewayAuthorizer": {
+            "Type": "AWS::ApiGateway::Authorizer",
             "Properties": {
-              "FunctionName": {
-                "Fn::GetAtt": [
-                  "AuthorizerLambdaFunction",
-                  "Arn"
-                ]
+              "AuthorizerResultTtlInSeconds": 300,
+              "IdentitySource": "method.request.querystring.apiKey",
+              "Name": "Authorizer",
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
               },
-              "Action": "lambda:InvokeFunction",
-              "Principal": "apigateway.amazonaws.com",
-              "SourceArn": {
+              "Type": "REQUEST",
+              "AuthorizerUri": {
                 "Fn::Join": [
                   "",
                   [
-                    "arn:",
-                    {
-                      "Ref": "AWS::Partition"
-                    },
-                    ":execute-api:",
-                    {
-                      "Ref": "AWS::Region"
-                    },
-                    ":",
-                    {
-                      "Ref": "AWS::AccountId"
-                    },
-                    ":",
-                    {
-                      "Ref": "ApiGatewayRestApi"
-                    },
-                    "/*/*"
+                    "arn:aws:apigateway:",
+                    "ap-southeast-2",
+                    ":lambda:path/",
+                    "2015-03-31/functions/",
+                    "arn:aws:lambda:ap-southeast-2:327303463717:function:lambda_request_authorizer2",
+                    "/invocations"
                   ]
                 ]
               }
+            }
+          },
+          "GWAuthPermissions": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "Action": "lambda:InvokeFunction",
+              "FunctionName": "arn:aws:lambda:ap-southeast-2:327303463717:function:lambda_request_authorizer2",
+              "Principal": "apigateway.amazonaws.com"
             }
           }
         },
@@ -784,25 +529,25 @@
               "Ref": "ServerlessDeploymentBucket"
             },
             "Export": {
-              "Name": "sls-api-key-in-query-string-sam1-dev-ServerlessDeploymentBucketName"
+              "Name": "sls-api-key-in-query-string-sam-dev-ServerlessDeploymentBucketName"
             }
           },
-          "AuthorizerLambdaFunctionQualifiedArn": {
+          "MyAuthFunctionLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "AuthorizerLambdaVersiontfBX5GOihIcfg5g5kFJhExXuwDebK5JQjUvjXhAZtZs"
+              "Ref": "MyAuthFunctionLambdaVersionDP5ryObA6fH0LILQ96fQOl0WAKNfEQJx1gfEfZR0gQg"
             },
             "Export": {
-              "Name": "sls-api-key-in-query-string-sam1-dev-AuthorizerLambdaFunctionQualifiedArn"
+              "Name": "sls-api-key-in-query-string-sam-dev-MyAuthFunctionLambdaFunctionQualifiedArn"
             }
           },
           "BackendFunctionLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "BackendFunctionLambdaVersion5MNKE5ZrLvBKzwnecmfxORYphw6fx8GAbz3yKNVatk"
+              "Ref": "BackendFunctionLambdaVersionqi2rMZRavIb2w3bEj5t6db5gLjc247FyujvaXoR2GaE"
             },
             "Export": {
-              "Name": "sls-api-key-in-query-string-sam1-dev-BackendFunctionLambdaFunctionQualifiedArn"
+              "Name": "sls-api-key-in-query-string-sam-dev-BackendFunctionLambdaFunctionQualifiedArn"
             }
           },
           "ServiceEndpoint": {
@@ -828,25 +573,13 @@
               ]
             },
             "Export": {
-              "Name": "sls-api-key-in-query-string-sam1-dev-ServiceEndpoint"
+              "Name": "sls-api-key-in-query-string-sam-dev-ServiceEndpoint"
             }
           },
-          "ShortFunnelAuth": {
+          "MyApiHealth": {
             "Description": "API Gateway endpoint URL for dev stage for api key validation in query string",
             "Value": {
-              "Fn::Sub": "https://{sls:instanceId}.execute-api.${AWS::Region}.amazonaws.com/dev/auth?apiKey=dev-unbounce-api-key"
-            }
-          },
-          "ShortFunnelApiHealth": {
-            "Description": "API Gateway endpoint URL for dev stage for api key validation in query string",
-            "Value": {
-              "Fn::Sub": "https://{sls:instanceId}.execute-api.${AWS::Region}.amazonaws.com/dev/shortfunnel-health?apiKey=dev-unbounce-api-key"
-            }
-          },
-          "ShortFunnelApiEnergy": {
-            "Description": "API Gateway endpoint URL for dev stage for api key validation in query string",
-            "Value": {
-              "Fn::Sub": "https://{sls:instanceId}.execute-api.${AWS::Region}.amazonaws.com/dev/shortfunnel-energy?apiKey=dev-unbounce-api-key"
+              "Fn::Sub": "https://${ApiGatewayRestApi}.execute-api.${AWS::Region}.amazonaws.com/dev/shortfunnel-health?apiKey=dev-unbounce-api-key"
             }
           }
         }
@@ -937,58 +670,24 @@
     },
     "pluginsData": {},
     "functions": {
-      "authorizer": {
+      "MyAuthFunction": {
         "description": "Extracts api key, authenticates against usage plan, allow/deny http methods and returns auth response object",
         "handler": "./auth.lambda_handler",
         "events": [],
-        "name": "api-key-in-query-string-sam1-dev-authorizer",
+        "name": "api-key-in-query-string-sam-dev-MyAuthFunction",
         "package": {},
         "memory": 1024,
         "timeout": 30,
         "runtime": "nodejs14.x",
         "vpc": {},
-        "versionLogicalId": "AuthorizerLambdaVersiontfBX5GOihIcfg5g5kFJhExXuwDebK5JQjUvjXhAZtZs"
+        "versionLogicalId": "MyAuthFunctionLambdaVersionDP5ryObA6fH0LILQ96fQOl0WAKNfEQJx1gfEfZR0gQg"
       },
-      "backendFunction": {
+      "BackendFunction": {
         "handler": "./backend.lambda_handler",
         "runtime": "nodejs14.x",
         "events": [
           {
             "http": {
-              "method": "get",
-              "cors": {
-                "origin": "*",
-                "methods": [
-                  "OPTIONS",
-                  "GET"
-                ],
-                "headers": [
-                  "Content-Type",
-                  "X-Amz-Date",
-                  "Authorization",
-                  "X-Api-Key",
-                  "X-Amz-Security-Token",
-                  "X-Amz-User-Agent"
-                ],
-                "allowCredentials": false
-              },
-              "path": "auth",
-              "authorizer": {
-                "type": "request",
-                "name": "authorizer",
-                "arn": {
-                  "$ref": "$[\"service\"][\"provider\"][\"compiledCloudFormationTemplate\"][\"Resources\"][\"AuthorizerLambdaPermissionApiGateway\"][\"Properties\"][\"FunctionName\"]"
-                },
-                "managedExternally": false,
-                "resultTtlInSeconds": 300,
-                "identitySource": "method.request.header.Authorization",
-                "claims": []
-              },
-              "integration": "AWS_PROXY"
-            }
-          },
-          {
-            "http": {
               "method": "post",
               "cors": {
                 "origin": "*",
@@ -1006,48 +705,14 @@
                 ],
                 "allowCredentials": false
               },
+              "private": true,
               "path": "shortfunnel-health",
               "authorizer": {
                 "type": "request",
-                "name": "authorizer",
-                "arn": {
-                  "$ref": "$[\"service\"][\"provider\"][\"compiledCloudFormationTemplate\"][\"Resources\"][\"AuthorizerLambdaPermissionApiGateway\"][\"Properties\"][\"FunctionName\"]"
-                },
                 "managedExternally": false,
-                "resultTtlInSeconds": 300,
-                "identitySource": "method.request.header.Authorization",
-                "claims": []
-              },
-              "integration": "AWS_PROXY"
-            }
-          },
-          {
-            "http": {
-              "method": "post",
-              "cors": {
-                "origin": "*",
-                "methods": [
-                  "OPTIONS",
-                  "POST"
-                ],
-                "headers": [
-                  "Content-Type",
-                  "X-Amz-Date",
-                  "Authorization",
-                  "X-Api-Key",
-                  "X-Amz-Security-Token",
-                  "X-Amz-User-Agent"
-                ],
-                "allowCredentials": false
-              },
-              "path": "shortfunnel-energy",
-              "authorizer": {
-                "type": "request",
-                "name": "authorizer",
-                "arn": {
-                  "$ref": "$[\"service\"][\"provider\"][\"compiledCloudFormationTemplate\"][\"Resources\"][\"AuthorizerLambdaPermissionApiGateway\"][\"Properties\"][\"FunctionName\"]"
+                "authorizerId": {
+                  "Ref": "ApiGatewayAuthorizer"
                 },
-                "managedExternally": false,
                 "resultTtlInSeconds": 300,
                 "identitySource": "method.request.header.Authorization",
                 "claims": []
@@ -1056,41 +721,63 @@
             }
           }
         ],
-        "name": "api-key-in-query-string-sam1-dev-backendFunction",
+        "name": "api-key-in-query-string-sam-dev-BackendFunction",
         "package": {},
         "memory": 1024,
         "timeout": 30,
         "vpc": {},
-        "versionLogicalId": "BackendFunctionLambdaVersion5MNKE5ZrLvBKzwnecmfxORYphw6fx8GAbz3yKNVatk"
+        "versionLogicalId": "BackendFunctionLambdaVersionqi2rMZRavIb2w3bEj5t6db5gLjc247FyujvaXoR2GaE"
       }
     },
     "resources": {
-      "Outputs": {
-        "ShortFunnelAuth": {
-          "Description": "API Gateway endpoint URL for dev stage for api key validation in query string",
-          "Value": {
-            "Fn::Sub": "https://{sls:instanceId}.execute-api.${AWS::Region}.amazonaws.com/dev/auth?apiKey=dev-unbounce-api-key"
+      "Resources": {
+        "ApiGatewayAuthorizer": {
+          "Type": "AWS::ApiGateway::Authorizer",
+          "Properties": {
+            "AuthorizerResultTtlInSeconds": 300,
+            "IdentitySource": "method.request.querystring.apiKey",
+            "Name": "Authorizer",
+            "RestApiId": {
+              "Ref": "ApiGatewayRestApi"
+            },
+            "Type": "REQUEST",
+            "AuthorizerUri": {
+              "Fn::Join": [
+                "",
+                [
+                  "arn:aws:apigateway:",
+                  "ap-southeast-2",
+                  ":lambda:path/",
+                  "2015-03-31/functions/",
+                  "arn:aws:lambda:ap-southeast-2:327303463717:function:lambda_request_authorizer2",
+                  "/invocations"
+                ]
+              ]
+            }
           }
         },
-        "ShortFunnelApiHealth": {
-          "Description": "API Gateway endpoint URL for dev stage for api key validation in query string",
-          "Value": {
-            "Fn::Sub": "https://{sls:instanceId}.execute-api.${AWS::Region}.amazonaws.com/dev/shortfunnel-health?apiKey=dev-unbounce-api-key"
-          }
-        },
-        "ShortFunnelApiEnergy": {
-          "Description": "API Gateway endpoint URL for dev stage for api key validation in query string",
-          "Value": {
-            "Fn::Sub": "https://{sls:instanceId}.execute-api.${AWS::Region}.amazonaws.com/dev/shortfunnel-energy?apiKey=dev-unbounce-api-key"
+        "GWAuthPermissions": {
+          "Type": "AWS::Lambda::Permission",
+          "Properties": {
+            "Action": "lambda:InvokeFunction",
+            "FunctionName": "arn:aws:lambda:ap-southeast-2:327303463717:function:lambda_request_authorizer2",
+            "Principal": "apigateway.amazonaws.com"
           }
         }
       },
-      "Resources": {}
+      "Outputs": {
+        "MyApiHealth": {
+          "Description": "API Gateway endpoint URL for dev stage for api key validation in query string",
+          "Value": {
+            "Fn::Sub": "https://${ApiGatewayRestApi}.execute-api.${AWS::Region}.amazonaws.com/dev/shortfunnel-health?apiKey=dev-unbounce-api-key"
+          }
+        }
+      }
     },
     "configValidationMode": "error",
     "serviceFilename": "serverless.yml",
     "initialServerlessConfig": {
-      "service": "api-key-in-query-string-sam1",
+      "service": "api-key-in-query-string-sam",
       "frameworkVersion": "3",
       "configValidationMode": "error",
       "provider": {
@@ -1105,10 +792,10 @@
     },
     "layers": {},
     "isDashboardMonitoringPreconfigured": false,
-    "artifact": "D:\\projects\\practice\\aws\\api-key-in-querystring\\src\\handlers\\.serverless\\api-key-in-query-string-sam1.zip"
+    "artifact": "D:\\projects\\practice\\aws\\api-key-in-querystring\\src\\handlers\\.serverless\\api-key-in-query-string-sam.zip"
   },
   "package": {
-    "artifactDirectoryName": "serverless/api-key-in-query-string-sam1/dev/1654113186848-2022-06-01T19:53:06.848Z",
-    "artifact": "api-key-in-query-string-sam1.zip"
+    "artifactDirectoryName": "serverless/api-key-in-query-string-sam/dev/1654600797740-2022-06-07T11:19:57.740Z",
+    "artifact": "api-key-in-query-string-sam.zip"
   }
 }
