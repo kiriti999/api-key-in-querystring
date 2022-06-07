@@ -74,13 +74,13 @@
     "MyAuthFunctionLogGroup": {
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
-        "LogGroupName": "/aws/lambda/api-key-in-query-string-sam-dev-MyAuthFunction"
+        "LogGroupName": "/aws/lambda/api-key-in-query-string-sls-dev-MyAuthFunction"
       }
     },
     "BackendFunctionLogGroup": {
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
-        "LogGroupName": "/aws/lambda/api-key-in-query-string-sam-dev-BackendFunction"
+        "LogGroupName": "/aws/lambda/api-key-in-query-string-sls-dev-BackendFunction"
       }
     },
     "IamRoleLambdaExecution": {
@@ -108,7 +108,7 @@
               "Fn::Join": [
                 "-",
                 [
-                  "api-key-in-query-string-sam",
+                  "api-key-in-query-string-sls",
                   "dev",
                   "lambda"
                 ]
@@ -125,7 +125,7 @@
                   ],
                   "Resource": [
                     {
-                      "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/api-key-in-query-string-sam-dev*:*"
+                      "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/api-key-in-query-string-sls-dev*:*"
                     }
                   ]
                 },
@@ -136,7 +136,7 @@
                   ],
                   "Resource": [
                     {
-                      "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/api-key-in-query-string-sam-dev*:*:*"
+                      "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/api-key-in-query-string-sls-dev*:*:*"
                     }
                   ]
                 }
@@ -149,7 +149,7 @@
           "Fn::Join": [
             "-",
             [
-              "api-key-in-query-string-sam",
+              "api-key-in-query-string-sls",
               "dev",
               {
                 "Ref": "AWS::Region"
@@ -167,11 +167,11 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/api-key-in-query-string-sam/dev/1654600797740-2022-06-07T11:19:57.740Z/api-key-in-query-string-sam.zip"
+          "S3Key": "serverless/api-key-in-query-string-sls/dev/1654601565500-2022-06-07T11:32:45.500Z/api-key-in-query-string-sls.zip"
         },
         "Handler": "./auth.lambda_handler",
         "Runtime": "nodejs14.x",
-        "FunctionName": "api-key-in-query-string-sam-dev-MyAuthFunction",
+        "FunctionName": "api-key-in-query-string-sls-dev-MyAuthFunction",
         "MemorySize": 1024,
         "Timeout": 30,
         "Description": "Extracts api key, authenticates against usage plan, allow/deny http methods and returns auth response object",
@@ -193,11 +193,11 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/api-key-in-query-string-sam/dev/1654600797740-2022-06-07T11:19:57.740Z/api-key-in-query-string-sam.zip"
+          "S3Key": "serverless/api-key-in-query-string-sls/dev/1654601565500-2022-06-07T11:32:45.500Z/api-key-in-query-string-sls.zip"
         },
         "Handler": "./backend.lambda_handler",
         "Runtime": "nodejs14.x",
-        "FunctionName": "api-key-in-query-string-sam-dev-BackendFunction",
+        "FunctionName": "api-key-in-query-string-sls-dev-BackendFunction",
         "MemorySize": 1024,
         "Timeout": 30,
         "Role": {
@@ -211,31 +211,31 @@
         "BackendFunctionLogGroup"
       ]
     },
-    "MyAuthFunctionLambdaVersionDP5ryObA6fH0LILQ96fQOl0WAKNfEQJx1gfEfZR0gQg": {
+    "MyAuthFunctionLambdaVersionU9qpMzVSXNN1LPzO4ZrYbYwsGnOsLiKhuZ3OFwcGY": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "MyAuthFunctionLambdaFunction"
         },
-        "CodeSha256": "heCqW/0/6XYPA3PnV9xqzW1wMAjINRO4FV6sQXvpkUE=",
+        "CodeSha256": "epj6XJNu/1G5EIhR1kb6G9e6Y4f19/sNNsDnnJzRb1c=",
         "Description": "Extracts api key, authenticates against usage plan, allow/deny http methods and returns auth response object"
       }
     },
-    "BackendFunctionLambdaVersionqi2rMZRavIb2w3bEj5t6db5gLjc247FyujvaXoR2GaE": {
+    "BackendFunctionLambdaVersionvRwNkaplzyyOsBHyqE2hSbCE987m8uni5vSJghPnUx4": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "BackendFunctionLambdaFunction"
         },
-        "CodeSha256": "heCqW/0/6XYPA3PnV9xqzW1wMAjINRO4FV6sQXvpkUE="
+        "CodeSha256": "epj6XJNu/1G5EIhR1kb6G9e6Y4f19/sNNsDnnJzRb1c="
       }
     },
     "ApiGatewayRestApi": {
       "Type": "AWS::ApiGateway::RestApi",
       "Properties": {
-        "Name": "dev-api-key-in-query-string-sam",
+        "Name": "dev-api-key-in-query-string-sls",
         "EndpointConfiguration": {
           "Types": [
             "EDGE"
@@ -353,7 +353,7 @@
         "BackendFunctionLambdaPermissionApiGateway"
       ]
     },
-    "ApiGatewayDeployment1654600786218": {
+    "ApiGatewayDeployment1654601554362": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -370,7 +370,7 @@
       "Type": "AWS::ApiGateway::ApiKey",
       "Properties": {
         "Enabled": true,
-        "Value": "dev-unbounce-api-key",
+        "Value": "dev-unbounce-sls-api-key",
         "Description": "Api key description",
         "StageKeys": [
           {
@@ -381,11 +381,11 @@
           }
         ]
       },
-      "DependsOn": "ApiGatewayDeployment1654600786218"
+      "DependsOn": "ApiGatewayDeployment1654601554362"
     },
     "ApiGatewayUsagePlan": {
       "Type": "AWS::ApiGateway::UsagePlan",
-      "DependsOn": "ApiGatewayDeployment1654600786218",
+      "DependsOn": "ApiGatewayDeployment1654601554362",
       "Properties": {
         "ApiStages": [
           {
@@ -395,8 +395,8 @@
             "Stage": "dev"
           }
         ],
-        "Description": "Usage plan for api-key-in-query-string-sam dev stage",
-        "UsagePlanName": "api-key-in-query-string-sam-dev",
+        "Description": "Usage plan for api-key-in-query-string-sls dev stage",
+        "UsagePlanName": "api-key-in-query-string-sls-dev",
         "Quota": {
           "Limit": 5000,
           "Offset": 2,
@@ -497,25 +497,25 @@
         "Ref": "ServerlessDeploymentBucket"
       },
       "Export": {
-        "Name": "sls-api-key-in-query-string-sam-dev-ServerlessDeploymentBucketName"
+        "Name": "sls-api-key-in-query-string-sls-dev-ServerlessDeploymentBucketName"
       }
     },
     "MyAuthFunctionLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "MyAuthFunctionLambdaVersionDP5ryObA6fH0LILQ96fQOl0WAKNfEQJx1gfEfZR0gQg"
+        "Ref": "MyAuthFunctionLambdaVersionU9qpMzVSXNN1LPzO4ZrYbYwsGnOsLiKhuZ3OFwcGY"
       },
       "Export": {
-        "Name": "sls-api-key-in-query-string-sam-dev-MyAuthFunctionLambdaFunctionQualifiedArn"
+        "Name": "sls-api-key-in-query-string-sls-dev-MyAuthFunctionLambdaFunctionQualifiedArn"
       }
     },
     "BackendFunctionLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "BackendFunctionLambdaVersionqi2rMZRavIb2w3bEj5t6db5gLjc247FyujvaXoR2GaE"
+        "Ref": "BackendFunctionLambdaVersionvRwNkaplzyyOsBHyqE2hSbCE987m8uni5vSJghPnUx4"
       },
       "Export": {
-        "Name": "sls-api-key-in-query-string-sam-dev-BackendFunctionLambdaFunctionQualifiedArn"
+        "Name": "sls-api-key-in-query-string-sls-dev-BackendFunctionLambdaFunctionQualifiedArn"
       }
     },
     "ServiceEndpoint": {
@@ -541,7 +541,7 @@
         ]
       },
       "Export": {
-        "Name": "sls-api-key-in-query-string-sam-dev-ServiceEndpoint"
+        "Name": "sls-api-key-in-query-string-sls-dev-ServiceEndpoint"
       }
     },
     "MyApiHealth": {
